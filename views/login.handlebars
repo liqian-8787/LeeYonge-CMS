@@ -1,5 +1,8 @@
 <div class="container login-form" >
-    <h2 class="title">Log in with your account</h2>      
+    <h2 class="title">Log in with your account</h2>   
+     {{#each loginErrors}}
+    <div class="error-message">{{this}}</div>
+    {{/each}}   
     <form method="POST" action ="/login"> 
         {{#each loginForm}}
             <label for="{{this.label}}">{{this.labelText}}</label>

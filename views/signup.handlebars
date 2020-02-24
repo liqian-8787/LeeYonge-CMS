@@ -1,5 +1,11 @@
 <div class="container signup-form" >
     <h2 class="title">Create account</h2> 
+    {{#each signupErrors}}
+    <div class="error-message">{{this}}</div>
+    {{/each}}
+    
+
+    {{!-- <div>{{successMessage}}</div> --}}
     <form method="POST" action ="/signup" >     
         <div class="signup-container">        
             <div class="form-group"> 

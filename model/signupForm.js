@@ -22,7 +22,7 @@ const signupForm=
                 label:'password',
                 labelText:`Password`,
                 placeHolder:`At least 6 characters` ,
-                fieldNotice:`<!> Passwords must consist of at least 6 characters`            
+                fieldNotice:`<!> Passwords must consist of 6 to 12 characters`            
             }
         ); 
         this.signupFormData.push(
