@@ -1,0 +1,39 @@
+<div class="container products" >
+    <h2 class="title">Product List</h2> 
+    <section class="products-container">
+        <div class="row">
+        {{#each products}}
+        
+            <div class="column">
+            <div class="product-item">
+                
+                    {{#if this.isBestSeller}}
+                    <div class="bestseller-flag">
+                        <p>
+                            <span>Best Seller</span>
+                            </p>
+                        </div>
+                    {{else}}
+                        <div class="no-promo-flag"></div>
+                    {{/if}}  
+                
+                <p class="product-title">
+                    {{this.name}}
+                </p>           
+                <div class="products-image-container">
+                    <img  src="{{this.image_url}}" />
+                </div>             
+                <p class="description">
+                    {{this.description}}
+                </p>
+                <p>
+                    Price: CDN {{this.price}}
+                </p>
+                
+            </div>
+            </div>
+        
+        {{/each}}
+        </div>
+    </section>
+</div>

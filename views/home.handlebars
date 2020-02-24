@@ -1,0 +1,72 @@
+        <section class="container product-promotion-container">       
+            <h2>Today's deal</h2>  
+            <div class="item-wrapper product-promotion-item-wrapper">       
+            {{#each promotionForm}}
+                <div class="product-promotion-item">
+                    <p class="product-promotion-title">
+                        {{this.type}}
+                    </p>
+
+                    <div class="promotion-image-container">
+                        <img class="image-format" src="{{this.image_url}}" />
+                    </div>  
+                    <p>
+                    Price: {{this.price}}
+                    </p>  
+                    <span aria-hidden="true">{{this.orignal_price}}</span >                   
+                
+                </div>
+            {{/each}}  
+            </div>               
+        </section>
+        <section class="container product-category-container">    
+            <h2>Category Banner</h2>   
+            <div class="product-category-item-wrapper">         
+                {{#each productCategory}}
+                    <div class="product-category-item">
+                        <p class="product-category-title">
+                            {{this.type}}
+                        </p>
+                        <div class="category-image-container">
+                            <img class="category-image" src="{{this.image_url}}" />
+                        </div>          
+                    </div>
+                {{/each}}     
+            </div>           
+        </section>
+
+        <section class="container best-seller">   
+            <h2>Best Seller</h2> 
+            <div class=" item-wrapper best-seller-item-wrapper">        
+             {{#each bestSeller}}                
+                  <div class="best-seller-item">
+                    <p class="best-seller-title">
+                            {{this.name}}
+                    </p>
+                    <div class="seller-image-container">
+                    <img class="image-format" src="{{this.image_url}}" />
+                    </div> 
+                        
+                        {{!-- <p>
+                            Description: {{this.description}}
+                        </p>
+                        <p>
+                            Price: {{this.price}}
+                        </p> --}}
+                    </div>
+                {{!-- {{#each this.bestSellerData}}
+                    <div>
+                        <p>
+                            Title : {{this.name}}
+                        </p>
+                        <p>
+                            Price: {{this.price}}
+                        </p>
+                        <p>
+                            Description: {{this.description}}
+                        </p>
+                    </div>
+                {{/each}} --}}
+            {{/each}}    
+            </div>
+        </section>

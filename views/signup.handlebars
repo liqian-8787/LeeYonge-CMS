@@ -1,0 +1,19 @@
+<div class="container signup-form" >
+    <h2 class="title">Create account</h2> 
+    <form method="POST" action ="/signup" >     
+        <div class="signup-container">        
+            <div class="form-group"> 
+                {{#each signupForm}}
+                    <div class="form-group-field">
+                        <label for="{{this.label}}">{{this.labelText}}</label>
+                        <input type="text" id="{{this.label}}" name="{{this.label}}" placeholder="{{this.placeHolder}}">
+                        {{#if this.fieldNotice}}     
+                            <div class='validation error-message'>{{this.fieldNotice}}</div> 
+                        {{/if}}   
+                    </div>                 
+                {{/each}}  
+            <input type="submit" value="Create your Amazon account">
+            </div>    
+        </div>          
+    </form> 
+</div>

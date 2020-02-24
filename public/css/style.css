@@ -1,0 +1,250 @@
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+body{
+    overflow-x:hidden;
+    margin:0 auto;
+    margin: 0;    
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #373a3c;
+    text-align: left;
+    background-color: #fff;
+}
+main{
+  min-height: 350px;
+  margin-bottom: 120px;
+}
+.hidden,
+.hide{
+  display:none;
+}
+.center{
+  margin-left:auto;
+  margin-right:auto;
+}
+.brand-logo{
+  max-width:85px;
+}
+.error-message{
+  color:#a94442;
+  font-size: small;
+}
+.validation{
+  margin-top:10px;
+}
+.nav{
+    width:100%;
+    background:#232f3e;
+    padding-top:20px;
+    padding-bottom:20px;
+}
+.nav>li {
+    display: inline-block;
+    width:initial;
+   padding-right: 25px;
+   padding-left: 25px;
+   border-right: 1px solid #aaa;
+   font-size:1.3em;
+  }
+  
+  .nav>li:last-child {
+    border-right:none;
+  }
+  .nav > li a{
+    color:white;
+    text-decoration: none;
+    padding: 5px;
+  }
+  .nav > li a:hover{
+    border:1px solid;
+    border-color: rgba(255,255,255,.2);
+    border-radius: 5px;
+    margin-right: -1px;
+    margin-left:-1px;
+  }
+.container{ 
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom:20px;
+}
+img{
+    max-width:100%;
+    vertical-align: middle;
+}
+@media (max-width: 519px){
+  .container {
+      margin-right: 15px;
+      margin-left: 15px;
+  }
+}
+@media(min-width:520px){
+.container{
+  width:480px;
+}
+}
+
+@media(min-width:640px){
+.container{
+  width:600px;
+}
+}
+@media(min-width:1000px){
+.container{
+  width:960px;
+}
+}
+@media(min-width:1200px){
+.container{
+  width:1200px;
+}
+}
+.item-wrapper{
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    justify-content: flex-start;
+}
+.product-promotion-item-wrapper{
+    width:100%;
+}
+.product-promotion-item-wrapper>.product-promotion-item{
+  min-width:270px;  
+}
+.promotion-image-container{
+  height:200px;
+  display: flex;
+  align-items: center;  
+}
+.image-format{
+    width: auto;
+    height: auto;
+    max-width: 270px;
+    max-height: 200px;
+  
+}
+.product-category-item-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  
+    overflow-x:auto;
+  
+}
+.best-seller-item-wrapper{
+    width:100%;
+}
+.best-seller-item-wrapper>.best-seller-item{
+    min-width:270px;  
+}
+.seller-image-container{
+    height:200px;
+    display: flex;
+    align-items: center;  
+}
+.category-image-container{
+    padding-left: 8px;
+    padding-right: 8px;
+   
+}
+.category-image{
+    border-radius: 80%;
+}
+
+.products-image-container> img{
+    max-height: 300px;
+   max-width: 250px;    
+}
+.products-image-container {
+    max-height: 350px;
+    max-width: 250px;
+    height: 295px;
+    display: table-cell;
+    vertical-align: middle;
+}
+.no-promo-flag{
+    height: 33px;
+}
+.bestseller-flag{
+    width:20%;
+    background-color: brown;
+    color: white;
+    margin-top: 2px;
+}
+
+.column {
+    display:inline-block;
+    vertical-align: top;
+    overflow: hidden;
+    word-spacing:normal;
+    letter-spacing: normal;
+    margin:0;
+    width: 33.3333333%;
+    
+  }
+  h1{
+    padding-left: 15px;
+  }
+  
+  
+  .row {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .description{
+    padding:0 20px 0 0;
+  }
+
+
+footer{
+  background:#232f3e;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 100px;
+  width: 100%;
+  overflow: hidden;  
+  display: flex;
+  align-items: center;
+}
+footer *{
+    color: white;    
+}
+footer > .container{
+  margin-bottom: 0;
+}
+footer p,
+footer .footer-link-social>li
+{
+  padding-right: 15px;
+  display: inline-block;  
+}
+ .footer-link-social>li:last-child{
+   padding-right: 0;
+ }
+
+footer p,
+.footer-left,
+.footer-right{  
+  display:inline-block;
+}
+.footer-right{
+  float:right;
+}
+
+
+/*form style*/
+
+.form-group .form-group-field{
+  margin-bottom:20px;  
+}
+.form-group .form-group-field > label{
+    min-width: 95px;
+    display: inline-block;
+}

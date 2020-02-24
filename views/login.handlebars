@@ -1,0 +1,13 @@
+<div class="container login-form" >
+    <h2 class="title">Log in with your account</h2>      
+    <form method="POST" action ="/login"> 
+        {{#each loginForm}}
+            <label for="{{this.label}}">{{this.labelText}}</label>
+            <input type="text" id="{{this.label}}" name="{{this.label}}"> <br/> <br/>
+            {{#if this.fieldNotice}}     
+                <div class='validation error-message'>{{this.fieldNotice}}</div><br/><br/> <br/> 
+            {{/if}} 
+        {{/each}}  
+        <input type="submit" value="Log in">
+    </form>              
+</div>
