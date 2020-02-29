@@ -1,19 +1,20 @@
 <div class="container login-form" >
     <h2 class="title">Log in with your account</h2>   
-     {{!-- {{#each loginErrors}}
-    <div class="error-message">{{this}}</div>
-    {{/each}}    --}}
 
     <form method="POST" action ="/login"> 
+    <div class="signup-container">   
+        <div class="form-group"> 
         {{#each loginForm}}
             <div class="form-group-field">
                 <label for="{{this.label}}">{{this.labelText}}</label>
-                <input type="text" id="{{this.label}}" name="{{this.label}}"> <br/>             
+                <input type="text" id="{{this.label}}" name="{{this.label}}">           
                 {{#if this.errorMessage}}
-                    <div class='validation error-message margin-10-top'>{{errorMessage}}</div><br/>  
+                    <div class='validation error-message margin-10-top'>{{errorMessage}}</div> 
                 {{/if}}
             </div>
         {{/each}}  
         <input type="submit" value="Log in">
+        </div>    
+    </div>     
     </form>              
 </div>

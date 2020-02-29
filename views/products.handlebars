@@ -1,39 +1,49 @@
 <div class="container products" >
     <h2 class="title">Product List</h2> 
-    <section class="products-container">
-        <div class="row">
-        {{#each products}}
-        
-            <div class="column">
-            <div class="product-item">
-                
-                    {{#if this.isBestSeller}}
-                    <div class="bestseller-flag">
-                        <p>
-                            <span>Best Seller</span>
-                            </p>
-                        </div>
-                    {{else}}
-                        <div class="no-promo-flag"></div>
-                    {{/if}}  
-                
-                <p class="product-title">
-                    {{this.name}}
-                </p>           
-                <div class="products-image-container">
-                    <img  src="{{this.image_url}}" />
-                </div>             
-                <p class="description">
-                    {{this.description}}
-                </p>
-                <p>
-                    Price: CDN {{this.price}}
-                </p>
-                
-            </div>
-            </div>
-        
-        {{/each}}
+        <div class="fixed-grid">
+            <div class="fixed-inner" style="padding-left: 140px;">                
+                <div class="products-container">
+                    <div class="row">
+                    {{#each products}}            
+                        <div class="column">
+                            <div class="product-item">                    
+                                {{#if this.isBestSeller}}
+                                <div class="bestseller-flag">
+                                    <p>
+                                        <span>Best Seller</span>
+                                    </p>
+                                </div>
+                                {{else}}
+                                    <div class="no-promo-flag"></div>
+                                {{/if}}  
+                                
+                                <p class="product-title" style="padding-left: 10px; ">
+                                    {{this.name}}
+                                </p>           
+                                <div class="products-image-container">
+                                    <img  src="{{this.image_url}}" />
+                                </div>             
+                                <p class="description">
+                                    {{this.description}}
+                                </p>
+                                <p style="padding-left: 10px;color:brown;">
+                                    Price: CDN {{this.price}}
+                                </p>
+                                
+                            </div>
+                        </div>                
+                    {{/each}}
+                    </div>
+                </div>
+                <div class="category-bar">
+                    <div class="inner-bar"></div>
+                    <ul>
+                        <ul>Accessory</ul>
+                        <ul>Gifts</ul>
+                        <ul>Home Office</ul>
+                        <ul>Snack</ul>                    
+                    </ul>
+                </div>
         </div>
-    </section>
+        </div>
 </div>

@@ -8,7 +8,7 @@ const products=
             {
                 name:'Toy',
                 description:`AMOSTING Magentic Building Tiles Building Blocks Educational 
-                Construction Building Toys for Boys and Girls Colorful Durable - 56 pcs`,
+                Construction Building Toys for Boys and Girls...`,
                 image_url:`/img/product_details/Gifts/toy.jpg`,
                 price:`$23.99`,
                 category:'Gifts',
@@ -39,7 +39,7 @@ const products=
             {
                 name:'ETEKCITY Digital Body Weight',
                 description:`ETEKCITY Digital Body Weight Bathroom 
-                Scale with Body Measuring Tape, Ultra Accurate, Large Easy-to-Read Backlit LCD Display, Step-On Technology, 400 lb/180 kg`,
+                Scale with Body Measuring Tape, Ultra Accurate...`,
                 image_url:`/img/product_details/Home_Office/elec.jpg`,
                 price:`$19.99`,
                 category:'Home_Office',

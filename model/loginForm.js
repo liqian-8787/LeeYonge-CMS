@@ -12,10 +12,10 @@ const loginForm=
         
         this.loginFormData.push(
             {
-                label:'Password',
+                label:'password',
                 labelText:`Password` ,
                 placeHolder:`Between 6 to 12 characters` ,
-                // fieldNotice:`<!> Passwords must consist of 6 to 12 characters`            
+                            
             }
         ); 
     },

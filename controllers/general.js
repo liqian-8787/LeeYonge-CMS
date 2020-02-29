@@ -1,13 +1,12 @@
 const express = require("express"); 
 const router = express.Router(); 
 
-const productsModel = require("./model/products");
-
-const productCategoryModel = require("./model/productCategory");
-const promotionFormModel = require("./model/promotionForm");
-const bestSellerModel = require("./model/bestSeller");
-const loginFormModel = require("./model/loginForm");
-const signupFormModel = require("./model/signupForm");
+const productsModel = require("../model/products");
+const productCategoryModel = require("../model/productCategory");
+const promotionFormModel = require("../model/promotionForm");
+const bestSellerModel = require("../model/bestSeller");
+const loginFormModel = require("../model/loginForm");
+const signupFormModel = require("../model/signupForm");
 
 //home router
 router.get("/",(req,res)=>{   
@@ -34,65 +33,66 @@ router.get("/signup",(req,res)=>{
     res.render("signup",{
         title:"Sign Up",
         headingInfo:"Sign Up",
-        signupForm:signupFormModel.getSignupFormData().map(data=>{//remove properties from data
+        signupForm:signupFormModel.getSignupFormData().map(data=>{
+            //remove properties from data
             delete data.value;
             delete data.errorMessage;
             return data;
-        })
+       })
     });
 });
 
 router.post("/signup",(req,res)=>{
-    
+    const {name,email,password,passwordConfirm} = req.body;
     let signupFormData = signupFormModel.getSignupFormData();   
     for(var index in signupFormData){   
         let self =  signupFormData[index];
         switch(self.label){
             case "name":
-                if(!req.body.name.trim()){
+                if(name==""){
                     delete self.value;
                     self.errorMessage = "<!> Enter your name";  
                 }
                 else {
-                    self.value = req.body.name; 
+                    self.value = name; 
                     delete self.errorMessage;     
                 }
                 break;
             case "email":
-                let emailPattern= new RegExp(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/)
-                if(!req.body.email.trim()){
+                let emailPattern= new RegExp(/^([a-zA-Z0-9.]+)@([a-zA-Z0-9.]+)\.([a-zA-Z]{2,5})$/);
+                if(email==""){
                     delete self.value;
                     self.errorMessage = "<!> Enter your e-mail";       
                 }
-                else if(!(emailPattern.test(req.body.password))){
+                else if(!(emailPattern.test(email))){
                     delete self.value;
                     self.errorMessage = "<!> Password must be like: somthing@someserver.com";               
                 }
                 else {
-                    self.value=req.body.email;
+                    self.value=email;
                     delete self.errorMessage;         
                 }
                 break;
             case "password":
                 let passwordPattern = new RegExp(/^[A-Za-z0-9]{6,12}$/);
-                if(!req.body.password.trim()){
-                    delete self.value;
+                if(password==""){
+                   delete self.value;
                     self.errorMessage = "<!> Enter your password";     
                 }
-                else if(!(passwordPattern.test(req.body.password))){
+                else if(!(passwordPattern.test(password))){
                     delete self.value;
                     self.errorMessage = "<!> Password must consist of 6 to 12 characters";               
                 }else {
-                    self.value=req.body.password;
+                    self.value=password;
                     delete self.errorMessage;  
                 }
                 break;
-            case "passwordAgain":
-                if(!req.body.passwordAgain.trim()||req.body.passwordAgain!==req.body.password){
-                    delete self.value;
+            case "passwordConfirm":
+                if(passwordConfirm==""||passwordConfirm!==password){
+                   delete self.value;
                     self.errorMessage = "<!> Password must be match";                
                 }else {
-                    self.value=req.body.password;
+                    self.value=password;
                     delete self.errorMessage;     
                 }               
                 break;
@@ -102,13 +102,29 @@ router.post("/signup",(req,res)=>{
     if(signupFormData.filter(errors=>errors.errorMessage!=="").length)//if there is errors in signupformdata
     {      
         res.render("signup",{                
-            signupForm:signupFormData                
-        });      
+            signupForm:signupFormData                 
+        });     
     }
     else
-    {
+    { 
+        const sgMail = require('@sendgrid/mail');
+        sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
+        const msg = {
+        from: `qianli0108@gmail.com`,
+        to: `${email}`,
+        subject: 'Signup form submitted',
+        html:
+         `<strong>Hi.${name}!  welcome to Amazon.</br> 
+          Now, you can log in and enjoy your shopping time!!!</strong>`,
+        };
         
-        res.render("dashboard"); 
+        sgMail.send(msg)
+        .then(()=>{
+            res.redirect("/");
+        })
+        .catch(err=>{
+            console.log(`Error ${err}`);
+        })
     }
 });
 
@@ -117,8 +133,8 @@ router.get("/login",(req,res)=>{
     res.render("login",{
         title:"Log In",
         headingInfo:"Log In",
-        loginForm:loginFormModel.getSignupFormData().map(data=>{//remove properties from data
-            delete data.value;
+        loginForm:loginFormModel.getLoginFormData().map(data=>{
+            delete data.value;     //remove properties from data
             delete data.errorMessage;
             return data;
         })
@@ -126,28 +142,28 @@ router.get("/login",(req,res)=>{
 });
 
 router.post("/login",(req,res)=>{
-
+    const {email,password}=req.body;
     let loginFormData = loginFormModel.getLoginFormData(); 
     for(var index in loginFormData){   
         let self =  loginFormData[index];
         switch(self.label){
             case "email":
-                if(!req.body.email.trim()){
+                if(email==""){
                     delete self.value;
                     self.errorMessage = "<!> Enter your e-mail";       
                 }
                 else {
-                    self.value=req.body.email;
+                    self.value=email;
                     delete self.errorMessage;         
                 }
-                break;
+                break
             case "password":                
-                if(!req.body.password.trim()){
+                if(password==""){
                     delete self.value;
                     self.errorMessage = "<!> Enter your password";     
                         
                 }else {
-                    self.value=req.body.password;
+                    self.value=password;
                     delete self.errorMessage;  
                 }
                 break;
@@ -161,7 +177,7 @@ router.post("/login",(req,res)=>{
         });      
     }
     else
-    {
+    {  
         res.redirect("/");
     }
 });
