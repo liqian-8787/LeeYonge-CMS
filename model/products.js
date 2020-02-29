@@ -19,7 +19,7 @@ const products=
             {
                 name:'Echo Dot',
                 description:`Echo Dot (3rd gen) - Smart speaker with Alexa - Charcoal`,
-                image_url:`/img/product_details/Home_Office/Echo_dot.jpg`,
+                image_url:`/img/product_details/Home_Office/echo_dot.jpg`,
                 price:`$44.99`,
                 category:'Home_Office',
                 isBestSeller:true

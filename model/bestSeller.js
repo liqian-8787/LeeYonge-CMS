@@ -15,15 +15,14 @@ const bestSeller=
         this. bestSellers.push({
             name:'Echo Dot',
             description:`Echo Dot (3rd gen) - Smart speaker with Alexa - Charcoal`,
-            image_url:`/img/promotion/Echo_flex.jpg `,
-        image_url:`/img/best_seller/echo_dot.jpg`,
+            image_url:`/img/best_seller/echo_dot.jpg`,
             price:`44.99`});
     
         this.bestSellers.push({
             name:'Cyxus Blue Light Blocking Glasses ',
             description:`Cyxus Blue Light Blocking Glasses Filter UV400 Computer Gaming Reading Glasses for Women Men Square 
             Frame Eyeglasses Anti Eye Strain Minimize Headache (8082T01, Standard size)`,
-        image_url:`/img/best_seller/glass.jpg`,
+            image_url:`/img/best_seller/glass.jpg`,
             price:`19.99`});
 
         this.bestSellers.push({
@@ -35,7 +34,7 @@ const bestSeller=
         this.bestSellers.push({
             name:'Mask Respirator',
             description:`GVS Elipse SPR457 P100 Elipse Half Mask Respirator, Medium/Large.`,
-                image_url:`/img/best_seller/mask.jpg`,
+            image_url:`/img/best_seller/mask.jpg`,
             price:`49.99`});
         
         this.bestSellers.push({

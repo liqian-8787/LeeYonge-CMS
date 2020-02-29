@@ -14,21 +14,21 @@ const productCategory=
             {
                 type:'Gifts',
                 description:`This is Gifts`,
-                image_url:`/img/product_details/gifts/gifts.jpg`
+                image_url:'/img/product_details/Gifts/gifts.jpg'
             }
         );
         this.categories.push(
             {
                 type:'Home Office',
                 description:`This is Home Office`,
-                image_url:`/img/product_details/home_office/home_office.jpg`
+                image_url:'/img/product_details/Home_Office/home_office.jpg'
             }
         );
         this.categories.push(
             {
                 type:'Snack',
                 description:`This is Snack`,
-                image_url:`/img/product_details/Snack/Snack.jpg`
+                image_url:'/img/product_details/Snack/snack.jpg'
             }
         );            
     },
