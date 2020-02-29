@@ -9,7 +9,7 @@ const bestSeller=
             name:'CHORTAU Dash Cam',
             description:`CHORTAU Dash Cam 1080P FHD 2019 New Version Car Dash Camera 3 inch Dashboard Camera with Night Vision, 170°Wide Angle, Parking Monitor, Loop Recording
             CHORTAU Dash Cam`,
-            image_url:`/img/best_seller/camera.jpg`,
+            image_url:'/img/best_seller/camera.jpg',
             price:`99.99`});
     
         this. bestSellers.push({
