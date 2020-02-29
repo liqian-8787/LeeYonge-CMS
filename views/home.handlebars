@@ -10,11 +10,8 @@
                     <div class="promotion-image-container">
                         <img class="image-format" src="{{this.image_url}}" />
                     </div>  
-                    <p>
-                    Price: {{this.price}}
-                    </p>  
-                    <span aria-hidden="true">{{this.orignal_price}}</span >                   
-                
+                    <span>Listing price: <span class="product-original-price text-strikethrough">{{this.orignal_price}}</span> </span>
+                    <p>Promotional Price: <span class="product-promotional-price">{{this.price}}</span></p>                                        
                 </div>
             {{/each}}  
             </div>               

@@ -120,7 +120,10 @@ router.post("/signup",(req,res)=>{
         
         sgMail.send(msg)
         .then(()=>{
-            res.redirect("/");
+            res.render("dashboard",{
+                name:`${name}`
+            });
+            
         })
         .catch(err=>{
             console.log(`Error ${err}`);
