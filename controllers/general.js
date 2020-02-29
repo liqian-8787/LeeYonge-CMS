@@ -29,7 +29,7 @@ router.get("/products",(req,res)=>{
 });
 
 //signup router
-router.get("/signup",(req,res)=>{
+router.get("/signup",(req,res)=>{   
     res.render("signup",{
         title:"Sign Up",
         headingInfo:"Sign Up",
@@ -99,14 +99,14 @@ router.post("/signup",(req,res)=>{
         }
     } 
 
-    if(signupFormData.filter(errors=>errors.errorMessage!=="").length)//if there is errors in signupformdata
+    if(signupFormData.filter(errors=>errors.errorMessage).length)//if there is errors in signupformdata
     {      
         res.render("signup",{                
             signupForm:signupFormData                 
         });     
     }
     else
-    { 
+    {        
         const sgMail = require('@sendgrid/mail');
         sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
         const msg = {
@@ -124,12 +124,12 @@ router.post("/signup",(req,res)=>{
         })
         .catch(err=>{
             console.log(`Error ${err}`);
-        })
+        }) 
     }
 });
 
 //login router
-router.get("/login",(req,res)=>{
+router.get("/login",(req,res)=>{    
     res.render("login",{
         title:"Log In",
         headingInfo:"Log In",
@@ -167,10 +167,10 @@ router.post("/login",(req,res)=>{
                     delete self.errorMessage;  
                 }
                 break;
-            }
         }
+    }
     
-    if(loginFormData.filter(errors=>errors.errorMessage!=="").length)//if there is errors in signupformdata
+    if(loginFormData.filter(error=>error.errorMessage).length)//if there is errors in signupformdata
     {      
         res.render("login",{                
             loginForm:loginFormData                
