@@ -161,68 +161,103 @@ img{
 .category-image{
     border-radius: 80%;
 }
- .products-container{
-  padding-left: 0%;
+
+.category-select{
+  margin-bottom: 15px;
+}
+.category-select>select{
+  padding: 10px;
+  font-size: 18px;
+  font-weight: 700;    
   width: 100%;
-  float: right;
-  margin-bottom: 80px;
- }
-.products-image-container> img{
-    max-height: 280px;
-   max-width: 250px;   
-   padding-left: 50px; 
+}
+.category-bar{
+  display:none;
+}
+.product-item{
+width:100%;
+border: 1px solid #000;
+padding: 0 15px;
+box-sizing: border-box;
+justify-content:space-between;
+margin-bottom:10px;
+overflow: hidden;
+}
+.bestseller-flag{
+display:inline-block;
+padding:5px 10px;
+margin-top:10px;;
+background-color: brown;
+color: white;
+margin-top: 10px;
 }
 .products-image-container {
-    max-height: 350px;
-    max-width: 250px;
-    height: 260px;
-    display: inline-block;
-    vertical-align: middle;
-   
-    padding: 20px;
+  margin: auto;
+  text-align: center;
+
+}
+.products-image-container> img{
+  max-height: 280px;
+  max-width: 250px;
+  margin: auto;
+}
+@media(min-width:1000px){
+  .fixed-inner{
+  display:flex;
+  }
+
+.products-container{
+float:unset;
+margin-bottom:0;
+display:flex;
+width:100%;
+flex-wrap:wrap;
+justify-content:space-between;
+}
+.products-image-container> img{
+  max-height: 280px;
+ max-width: 250px;
+}
+.products-image-container {
+  max-height: 350px;
+  max-width: 250px;
+  height: 260px;
+  display: inline-block;
+  vertical-align: middle;
+ 
+  padding: 20px;
+}
+
+.product-item{
+width:calc(33.333% - 7px);
+}
+ul.category-nav {
+  padding: 0px 30px 0 0;
+  margin: 0 auto;
+  list-style-type: none;
+  min-width:100px;
+}
+ul.category-nav > li{
+margin-bottom:10px;
+}
+
+
+  .category-bar{
+   display:inherit;
+  }
+  .category-select{
+   display: none;;
+  }
 }
 .no-promo-flag{
     height: 33px;
 }
-.bestseller-flag{
-    width:20%;
-    background-color: brown;
-    color: white;
-    margin-top: 2px;
-}
-.fixed-inner{
-position: relative;
-}
-.column {
-    display:inline-block;
-    vertical-align: top;
-    overflow: hidden;
-    border: 0.8px solid rgba(0, 0, 0, 0.5);    
-  }
 
   h1{
     padding-left: 15px;
   }
-  .category-bar{
-    width: 200px;
-    margin-left: -200px;
-    float: none;
-    position: relative;
-    overflow: visible;
-    zoom: 1;
-    min-height: 1px;
-  }
-  .inner-bar{
-    padding: 0;
-    border-right: 1px solid #ddd;
-    margin: 0 -1px 0 -2px;
-  }
-  
-  .row {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    padding: 10px;  
-  }
+
+ 
   .description{ 
     padding:0 20px 0 10px;
   }

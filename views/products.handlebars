@@ -1,23 +1,38 @@
 <div class="container products" >
     <h2 class="title">Product List</h2> 
         <div class="fixed-grid">
-            <div class="fixed-inner" style="padding-left: 140px;">                
+            <div class="fixed-inner">  
+                <div class="category-select">
+                    <select>
+                        <option>Accessory</option>
+                        <option>Gifts</option>
+                        <option>Home Office</option>
+                        <option>Snack</option>
+                    </select>
+                </div>
+                <div class="category-bar">
+                    <div class="inner-bar"></div>
+                    <ul class="category-nav">
+                        <li class="category-nav-item">Accessory</li>
+                        <li class="category-nav-item">Gifts</li>
+                        <li class="category-nav-item">Home Office</li>
+                        <li class="category-nav-item">Snack</li>                    
+                    </ul>
+                </div>              
                 <div class="products-container">
-                    <div class="row">
+                    
                     {{#each products}}            
-                        <div class="column">
+                        
                             <div class="product-item">                    
                                 {{#if this.isBestSeller}}
                                 <div class="bestseller-flag">
-                                    <p>
-                                        <span>Best Seller</span>
-                                    </p>
+                                    Best Seller                                    
                                 </div>
                                 {{else}}
                                     <div class="no-promo-flag"></div>
                                 {{/if}}  
                                 
-                                <p class="product-title" style="padding-left: 10px; ">
+                                <p class="product-title">
                                     {{this.name}}
                                 </p>           
                                 <div class="products-image-container">
@@ -31,19 +46,10 @@
                                 </p>
                                 
                             </div>
-                        </div>                
+                                    
                     {{/each}}
-                    </div>
-                </div>
-                <div class="category-bar">
-                    <div class="inner-bar"></div>
-                    <ul>
-                        <ul>Accessory</ul>
-                        <ul>Gifts</ul>
-                        <ul>Home Office</ul>
-                        <ul>Snack</ul>                    
-                    </ul>
-                </div>
+                    
+                </div>              
         </div>
         </div>
 </div>
