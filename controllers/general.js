@@ -81,7 +81,7 @@ router.post("/signup",(req,res)=>{
                 }
                 else if(!(passwordPattern.test(password))){
                     delete self.value;
-                    self.errorMessage = "<!> Password must consist of 6 to 12 characters";               
+                    self.errorMessage = "<!> Password must consist of 6 to 12 characters(letters and numbers)";               
                 }else {
                     self.value=password;
                     delete self.errorMessage;  
