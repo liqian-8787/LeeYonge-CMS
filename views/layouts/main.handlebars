@@ -9,43 +9,13 @@
 </head>
 <body>
         <header> 
-            <nav>
-                <ul class="nav nav-desktop">
-                    <a href="/"><img class="brand-logo"  src="/img/logo.JPG"/></a>                    
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/products">Products</a></li>
-                    <li><a href="/signup">Sign Up</a></li>
-                    <li><a href="/login">Log In</a></li>
-                </ul>
-                <div class="nav nav-mobile">
-                    <a href="/"><img class="brand-logo"  src="/img/logo.JPG"/></a>                    
-                    <ul class="nav-mobile-tabs">                                
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/products">Products</a></li>
-                        <li><a href="/signup">Sign Up</a></li>
-                        <li><a href="/login">Log In</a></li>
-                    </ul>                    
-                </div>
-            </nav>
+            {{> nav}}
          </header>
         <main>          
           
                 {{{body}}}
                
         </main> 
-        <footer>
-            <div class="container">
-                <div class="footer-left">
-                    <p>Amazon inc</p>  
-                    <p>Amazon Drive</p>  
-                </div>
-                
-                <ul class="footer-link-social footer-right">
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Google+</a></li>
-                </ul>     
-            </div>  
-        </footer>
+        {{> footer}}
 </body>
 </html>
