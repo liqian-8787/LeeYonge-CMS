@@ -1,7 +1,10 @@
 <div class="container login-form" >
+    {{#each errors}}
+        <div class='validation error-message margin-10-top'>{{this}}</div>
+    {{/each}}
     <h2 class="title">Log in with your account</h2>   
 
-    <form method="POST" action ="/login"> 
+    <form method="POST" action ="/user/login"> 
     <div class="signup-container">   
         <div class="form-group"> 
         {{#each loginForm}}

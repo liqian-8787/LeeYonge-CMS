@@ -2,7 +2,7 @@
     <h2 class="title">Create account</h2> 
 
      {{!-- <div>{{successMessage}}</div> --}}
-    <form method="POST" action ="/signup" >     
+    <form method="POST" action ="/user/signup" enctype="multipart/form-data">     
         <div class="signup-container">        
             <div class="form-group"> 
                 {{#each signupForm as |formData|}}                    
