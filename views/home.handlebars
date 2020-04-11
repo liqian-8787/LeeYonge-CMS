@@ -4,14 +4,14 @@
             {{#each promotionForm}}
                 <div class="product-promotion-item">
                     <p class="product-promotion-title">
-                        {{this.type}}
+                        {{this.name}}
                     </p>
 
                     <div class="promotion-image-container">
                         <img class="image-format" src="{{this.image_url}}" />
                     </div>  
-                    <span>Listing price: <span class="product-original-price text-strikethrough">{{this.orignal_price}}</span> </span>
-                    <p>Promotional Price: <span class="product-promotional-price">{{this.price}}</span></p>                                        
+                    <span>Listing price: <span class="product-original-price text-strikethrough">${{this.price}}</span> </span>
+                    <p>Promotional Price: <span class="product-promotional-price">${{this.promotional_price}}</span></p>                                        
                 </div>
             {{/each}}  
             </div>               

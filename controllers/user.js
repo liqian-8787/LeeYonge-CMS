@@ -98,7 +98,7 @@ router.post("/signup", (req, res) => {
             .then(doc => {
                 if (doc != null) {
                     res.render('general/error', {
-                        errorMessage: `User email has already been registered!`
+                        errorMessage: `Singup failed: User email has already been registered!`
                     })
                 } else {
                     user.save()
@@ -180,7 +180,7 @@ router.post("/login", (req, res) => {
             loginForm: loginFormData
         });
     }
-    else {
+    else {        
         userModel.findOne({email:req.body.email})
         .then(user=>{
 
@@ -212,7 +212,7 @@ router.post("/login", (req, res) => {
 
                     if(isMatched)
                     {
-                        console.log(`Password matches!`)
+                        console.log(`user auth pass!`)                        
                         //cretae our sessoin
                         req.session.userInfo = user;
 
@@ -244,8 +244,22 @@ router.post("/login", (req, res) => {
     }
 });
 
-
 router.get("/profile",isAuthenticated,dashBoardLoader);
+
+// router.get("/clerkdashboard",(req,res)=>{
+//     console.log(`login as clerk`)
+//     if(req.session.userInfo)
+//     res.render("user/clerkdashboard",{
+        
+//     })
+// })
+
+// router.get("/userdashboard",(req,res)=>{
+//     console.log(`login as user`);
+//     res.render("user/userdashboard",{
+        
+//     })
+// })
 
 router.get("/logout",(req,res)=>{
 

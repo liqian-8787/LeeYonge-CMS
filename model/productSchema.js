@@ -17,12 +17,12 @@ const productSchema = new Schema({
     },
 
     image_url:{
-
+        type:String
     },
 
     price:
     {
-        type:String,
+        type:Number,
         required:true
     },
 
@@ -34,8 +34,18 @@ const productSchema = new Schema({
 
     isBestSeller:
     {
-        type:String,
+        type:Boolean,
+        default:false
+    },
+
+    promotional_price:{
+        type:Number,
         required:false
+    },
+    quantity:{
+        type:Number,
+        required:true,
+        default:0
     }
 });
 

@@ -1,0 +1,101 @@
+<div class="container dashboard">
+    <form method="POST" action="/product/search">
+        <label>Search By</label>
+        <select name="product_category">
+            {{!-- <option value="All">All Products</option>   --}}
+            {{#each allDistinctCategories}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <input type="submit" value="Search">
+    </form>
+    {{#if addedProduct}}
+    <p class="alert success-message">The product {{addedProduct.name}} has added to db </p>
+    {{/if}}
+    {{#if generalMessage}}
+    <p class="alert warning">{{generalMessage}}</p>
+    {{/if}}
+    {{#if products}}
+    <h3>Edit/Delete Products:</h3>
+    {{#each products}}
+    <div>
+        <form method="POST">
+            <div class="form-group">
+                <div class="form-group-field">
+                    <label for="name">Product name:</label>
+                    <input type="text" id="name" name="name" value="{{this.name}}">
+                </div>
+                <div class="form-group-field">
+                    <label for="description">description:</label>
+                    <input type="text" id="description" name="description" value="{{this.description}}">
+                </div>
+                <div class="form-group-field">
+                    <label for="price">price:</label>
+                    <input type="text" id="price" name="price" value="{{this.price}}">
+                </div>
+                <div class="form-group-field">
+                    <label for="category">Product category:</label>
+                    <input type="text" id="category" name="category" value="{{this.category}}">
+                </div>
+                <div class="form-group-field">
+                    <label for="isBestSeller">Is Best Seller:</label>
+                    <input type="checkbox" id="isBestSeller" name="isBestSeller" {{#if this.isBestSeller}}checked{{/if}} value="true"/>
+                </div>
+                {{#if this.promotional_price}}
+                <div class="form-group-field">
+                    <label for="promotional_price">Promotional price:</label>
+                    <input type="text" id="promotional_price" name="promotional_price" value="{{this.promotional_price}}">
+                </div>
+                {{/if}}
+                <div class="form-group-field">
+                    <label for="quantity">quantity:</label>
+                    <input type="text" id="quantity" name="quantity" value="{{this.quantity}}">
+                </div>
+                <input type="submit" value="Update" formaction="/product/update/{{this.id}}?method=PUT" />
+                <input type="submit" value="Delete" formaction="/product/delete/{{this.id}}?method=DELETE" />
+            </div>
+        </form>
+    </div>
+    {{/each}}
+    {{/if}}
+    <h3>Add a new product</h3>
+    <form method="POST" action="/product/add">
+        <div class="signup-container">
+            <div class="form-group">
+                <div class="form-group-field">
+                    <label for="name">Product name:</label>
+                    <input type="text" id="name" name="name">
+                </div>
+                <div class="form-group-field">
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="description">
+                </div>
+                <div class="form-group-field">
+                    <label for="image_url">Image path:</label>
+                    <input type="text" id="image_url" name="image_url">
+                </div>
+                <div class="form-group-field">
+                    <label for="price">Price:</label>
+                    <input type="text" id="price" name="price">
+                </div>
+                <div class="form-group-field">
+                    <label for="category">Category:</label>
+                    <input type="text" id="category" name="category">
+                </div>
+                <div class="form-group-field">
+                    <label for="isBestSeller">Is best seller:</label>
+                    <input type="checkbox" id="isBestSeller" name="isBestSeller" value="true">
+                </div>
+                <div class="form-group-field">
+                    <label for="promotional_price">Promotional Price:</label>
+                    <input id="promotional_price" name="promotional_price">
+                </div>
+                <div class="form-group-field">
+                    <label for="quantity">Quantity:</label>
+                    <input id="quantity" name="quantity">
+                </div>
+                <input type="submit" value="Add product">
+            </div>
+        </div>
+    </form>
+</div>

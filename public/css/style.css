@@ -28,14 +28,30 @@ main{
 .text-strikethrough{
   text-decoration: line-through;
 }
+.alert{
+  position: relative;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
 .brand-logo{
   max-width:85px;
 }
 .error-message{
-  color:#a94442;  
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+.success-message{
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
 }
 .warning{
-  color:#856404;
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
 }
 .notification,
 .validation{
@@ -425,7 +441,12 @@ footer p,
   font-size: 20px;
 }
 /*form style*/
-
+.form-group{
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+    padding: 20px;
+    border-radius: 10px;
+}
 .form-group .form-group-field{
   margin-bottom:20px;  
 }
