@@ -2,20 +2,19 @@
     <h2 class="title">Product List</h2> 
         <div class="fixed-grid">
             <div class="fixed-inner">  
-                <div class="category-select">
-                    <select>
-                        <option><a href="">Accessory</a></option>
-                        <option><a href="">Gifts</a></option>
-                        <option><a href="">Home Office</a></option>
-                        <option><a href="">Snack</a></option>
-                    </select>
-                </div>
+                <div class="category-select">                   
+                    <select name="" onchange="if (this.value) window.location.href=this.value">                         
+                        {{#each allDistinctCategories}}
+                            <option value="/products/{{this}}"><a href="">{{this}}</a></option>
+                        {{/each}}
+                    </select>                   
+                </div>              
+                
                 <div class="category-bar">
                     <ul class="category-nav">
-                        <li class="category-nav-item"><a href="">Accessory</a></li>
-                        <li class="category-nav-item"><a href="">Gifts</a></li>
-                        <li class="category-nav-item"><a href="">Home Office</a></li>
-                        <li class="category-nav-item"><a href="">Snack</a></li>                    
+                        {{#each allDistinctCategories}}
+                            <li class="category-nav-item {{#if this.isActive}}active{{/if}}"><a href="/products/{{this.category}}">{{this.text}}</a></li>
+                        {{/each}}                              
                     </ul>
                 </div>              
                 <div class="products-container">                    

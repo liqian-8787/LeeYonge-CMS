@@ -133,7 +133,7 @@ router.post("/signup", (req, res) => {
 });
 
 //login router
-router.get("/login", (req, res) => {
+router.get("/login",(req, res) => {  
     res.render("login", {
         title: "Log In",
         headingInfo: "Log In",
@@ -141,7 +141,8 @@ router.get("/login", (req, res) => {
             delete data.value;     //remove properties from data
             delete data.errorMessage;
             return data;
-        })
+        }),
+        userInfo:req.session.userInfo
     });
 });
 

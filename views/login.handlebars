@@ -1,7 +1,10 @@
 <div class="container login-form" >
     {{#each errors}}
-        <div class='validation error-message margin-10-top'>{{this}}</div>
+        <div class='alert error-message margin-10-top'>{{this}}</div>
     {{/each}}
+    {{#if userInfo}}
+        <div class="alert success-message">You are logged in as {{userInfo.name}}. <a href="/user/profile">view your profile</a> or login another account below!</div>
+    {{/if}}
     <h2 class="title">Log in with your account</h2>   
 
     <form method="POST" action ="/user/login"> 

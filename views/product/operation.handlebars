@@ -9,6 +9,10 @@
         </select>
         <input type="submit" value="Search">
     </form>
+    {{!-- <ul class="product-access-links">
+        <li>Edit/Delete from <a href="/product/list/myproduct">My Product</a>?</li>
+        <li>Edit/Delete from <a href="/product/list/all">All Product</a>?</li>
+    </ul> --}}
     {{#if addedProduct}}
     <p class="alert success-message">The product {{addedProduct.name}} has added to db </p>
     {{/if}}
@@ -16,9 +20,9 @@
     <p class="alert warning">{{generalMessage}}</p>
     {{/if}}
     {{#if products}}
-    <h3>Edit/Delete Products:</h3>
-    {{#each products}}
-    <div>
+    <div class="product-operations">
+        <h3>Edit/Delete Products:</h3>
+        {{#each products}}
         <form method="POST">
             <div class="form-group">
                 <div class="form-group-field">
@@ -27,7 +31,7 @@
                 </div>
                 <div class="form-group-field">
                     <label for="description">description:</label>
-                    <input type="text" id="description" name="description" value="{{this.description}}">
+                    <textarea type="text" id="description" name="description" value="{{this.description}}">{{this.description}}</textarea>
                 </div>
                 <div class="form-group-field">
                     <label for="price">price:</label>
@@ -38,13 +42,27 @@
                     <input type="text" id="category" name="category" value="{{this.category}}">
                 </div>
                 <div class="form-group-field">
+                    <label for="image_url">Image path:</label>
+                    <input type="text" id="image_url" name="image_url" value="{{this.image_url}}">
+                </div>
+
+                {{#if this.image_url}}
+                <div class="form-group-field edit-image-display">
+                    <label for="image_url">Image preview:</label>
+                    <img class="img img-responsive" src="{{this.image_url}}" />
+                </div>
+                {{/if}}
+
+                <div class="form-group-field">
                     <label for="isBestSeller">Is Best Seller:</label>
-                    <input type="checkbox" id="isBestSeller" name="isBestSeller" {{#if this.isBestSeller}}checked{{/if}} value="true"/>
+                    <input type="checkbox" id="isBestSeller" name="isBestSeller" {{#if this.isBestSeller}}checked{{/if}}
+                        value="true" />
                 </div>
                 {{#if this.promotional_price}}
                 <div class="form-group-field">
                     <label for="promotional_price">Promotional price:</label>
-                    <input type="text" id="promotional_price" name="promotional_price" value="{{this.promotional_price}}">
+                    <input type="text" id="promotional_price" name="promotional_price"
+                        value="{{this.promotional_price}}">
                 </div>
                 {{/if}}
                 <div class="form-group-field">
@@ -55,47 +73,53 @@
                 <input type="submit" value="Delete" formaction="/product/delete/{{this.id}}?method=DELETE" />
             </div>
         </form>
+        {{/each}}
     </div>
-    {{/each}}
     {{/if}}
-    <h3>Add a new product</h3>
-    <form method="POST" action="/product/add">
-        <div class="signup-container">
-            <div class="form-group">
-                <div class="form-group-field">
-                    <label for="name">Product name:</label>
-                    <input type="text" id="name" name="name">
+    <div class="product-operations">
+        <h3>Add a new product</h3>
+        <form method="POST" action="/product/add" enctype="multipart/form-data">
+            <div class="signup-container">
+                <div class="form-group">
+                    <div class="form-group-field">
+                        <label for="name">Product name:</label>
+                        <input type="text" id="name" name="name">
+                    </div>
+                    <div class="form-group-field">
+                        <label for="description">Description:</label>
+                        <input type="text" id="description" name="description">
+                    </div>
+                    {{!-- <div class="form-group-field">
+                        <label for="image_url">Image path:</label>
+                        <input type="text" id="image_url" name="image_url">
+                    </div> --}}
+                    <div class="form-group-field">
+                        <label>Upload Product Image:</label>
+                        <input type="file" name="productPic" id="productPic">
+                    </div>
+                    <div class="form-group-field">
+                        <label for="price">Price:</label>
+                        <input type="text" id="price" name="price">
+                    </div>
+                    <div class="form-group-field">
+                        <label for="category">Category:</label>
+                        <input type="text" id="category" name="category">
+                    </div>
+                    <div class="form-group-field">
+                        <label for="isBestSeller">Is best seller:</label>
+                        <input type="checkbox" id="isBestSeller" name="isBestSeller" value="true">
+                    </div>
+                    <div class="form-group-field">
+                        <label for="promotional_price">Promotional Price:</label>
+                        <input id="promotional_price" name="promotional_price">
+                    </div>
+                    <div class="form-group-field">
+                        <label for="quantity">Quantity:</label>
+                        <input id="quantity" name="quantity">
+                    </div>
+                    <input type="submit" value="Add product">
                 </div>
-                <div class="form-group-field">
-                    <label for="description">Description:</label>
-                    <input type="text" id="description" name="description">
-                </div>
-                <div class="form-group-field">
-                    <label for="image_url">Image path:</label>
-                    <input type="text" id="image_url" name="image_url">
-                </div>
-                <div class="form-group-field">
-                    <label for="price">Price:</label>
-                    <input type="text" id="price" name="price">
-                </div>
-                <div class="form-group-field">
-                    <label for="category">Category:</label>
-                    <input type="text" id="category" name="category">
-                </div>
-                <div class="form-group-field">
-                    <label for="isBestSeller">Is best seller:</label>
-                    <input type="checkbox" id="isBestSeller" name="isBestSeller" value="true">
-                </div>
-                <div class="form-group-field">
-                    <label for="promotional_price">Promotional Price:</label>
-                    <input id="promotional_price" name="promotional_price">
-                </div>
-                <div class="form-group-field">
-                    <label for="quantity">Quantity:</label>
-                    <input id="quantity" name="quantity">
-                </div>
-                <input type="submit" value="Add product">
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>

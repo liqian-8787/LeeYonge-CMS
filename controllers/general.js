@@ -3,13 +3,10 @@ const router = express.Router();
 
 const productsModel =  require("../model/productSchema");
 const productCategoryModel = require("../model/productCategory");
-const promotionFormModel = require("../model/promotionForm");
-const bestSellerModel = require("../model/bestSeller");
 
 
 //home router
-router.get("/",(req,res)=>{  
-       
+router.get("/",(req,res)=>{
     productsModel.find().then((products)=>{
         const allProducts = products.map(product=>{           
             return{
@@ -22,16 +19,7 @@ router.get("/",(req,res)=>{
                 promotional_price:product.promotional_price,
                 quantity:product.quantity             
             }           
-        })
-        // const bestSeller = allProducts.filter(product=>{
-        //     if(product.isBestSeller)
-        //     return{
-        //         name : product.name,
-        //         description : product.description,
-        //         image_url : product.image_url,
-        //         isBestSeller:product.isBestSeller,
-        //     }            
-        // });
+        })        
         const bestSeller = allProducts.filter(product=>product.isBestSeller);
         const allPromolProducts = allProducts.filter(product=>product.promotional_price&&(product.promotional_price<product.price));
 
@@ -46,7 +34,7 @@ router.get("/",(req,res)=>{
 });
 
 //products router
-router.get("/products",(req,res)=>{
+router.get("/products/:category?",(req,res)=>{
     productsModel.find().then((products)=>{
         const allProducts = products.map(product=>{
             return{
@@ -55,14 +43,37 @@ router.get("/products",(req,res)=>{
                 image_url : product.image_url,
                 price : product.price,
                 category:product.category,
-                isBestSeller:product.isBestSeller                
+                isBestSeller:product.isBestSeller                           
             }
         })
+
+        const allCategories = allProducts.map(product=>{
+            return{
+                category:product.category,
+                text:product.category.replace(/_+|-+/g, ' '),
+                isActive: req.params.category == product.category?true:false    
+            }
+        })  
+        //Used for navigation active.
+        //Keywords "All" or undefined keywards will consider all category
+        const allCategoryCond = req.params.category=="All" ||typeof(req.params.category) =='undefined'?true:false;
+
+        let allDistinctCategories = allCategories.filter((elem, index, self) => self.findIndex(
+            (t) => {return (t.category === elem.category && t.text === elem.text)}) === index); 
+      
+        /*Always place All selection on top*/
+        allDistinctCategories.unshift({category:"All",text:"All",isActive: allCategoryCond });
+        
+        const searchedProducts =  allCategoryCond ? allProducts : allProducts.filter(product=>product.category==req.params.category);   
+       
         res.render("products",{
             title:"Products",
             headingInfo: "Products",
-            products : allProducts
+            products : searchedProducts,
+            allDistinctCategories:allDistinctCategories,
+            allDistinctCategoriesText: allDistinctCategories
         });
     })    
 });
+
 module.exports=router;
