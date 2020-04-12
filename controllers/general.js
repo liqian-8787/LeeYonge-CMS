@@ -36,6 +36,9 @@ router.get("/",(req,res)=>{
 //products router
 router.get("/products/:category?",(req,res)=>{
     productsModel.find().then((products)=>{
+
+        const isUserLoggedin = req.session.userInfo&&req.session.userInfo.role!="Clerk"?true:false;
+
         const allProducts = products.map(product=>{
             return{
                 name : product.name,
@@ -43,7 +46,8 @@ router.get("/products/:category?",(req,res)=>{
                 image_url : product.image_url,
                 price : product.price,
                 category:product.category,
-                isBestSeller:product.isBestSeller                           
+                isBestSeller:product.isBestSeller,
+                product_url:`/product/${product._id}`,                                                          
             }
         })
 
@@ -54,7 +58,7 @@ router.get("/products/:category?",(req,res)=>{
                 isActive: req.params.category == product.category?true:false    
             }
         })  
-        //Used for navigation active.
+        //Used for navigation active. [{key:abc, value:cd},{key:abc,value:cd}]
         //Keywords "All" or undefined keywards will consider all category
         const allCategoryCond = req.params.category=="All" ||typeof(req.params.category) =='undefined'?true:false;
 
@@ -65,13 +69,13 @@ router.get("/products/:category?",(req,res)=>{
         allDistinctCategories.unshift({category:"All",text:"All",isActive: allCategoryCond });
         
         const searchedProducts =  allCategoryCond ? allProducts : allProducts.filter(product=>product.category==req.params.category);   
-       
+            
         res.render("products",{
             title:"Products",
             headingInfo: "Products",
             products : searchedProducts,
             allDistinctCategories:allDistinctCategories,
-            allDistinctCategoriesText: allDistinctCategories
+            isUserLoggedin:isUserLoggedin
         });
     })    
 });

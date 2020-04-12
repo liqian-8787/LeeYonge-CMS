@@ -1,47 +1,76 @@
-<div class="container products" >
-    <h2 class="title">Product List</h2> 
-        <div class="fixed-grid">
-            <div class="fixed-inner">  
-                <div class="category-select">                   
-                    <select name="" onchange="if (this.value) window.location.href=this.value">                         
-                        {{#each allDistinctCategories}}
-                            <option value="/products/{{this}}"><a href="">{{this}}</a></option>
-                        {{/each}}
-                    </select>                   
-                </div>              
-                
-                <div class="category-bar">
-                    <ul class="category-nav">
-                        {{#each allDistinctCategories}}
-                            <li class="category-nav-item {{#if this.isActive}}active{{/if}}"><a href="/products/{{this.category}}">{{this.text}}</a></li>
-                        {{/each}}                              
-                    </ul>
-                </div>              
-                <div class="products-container">                    
-                    {{#each products}}                                  
-                        <div class="product-item">                    
-                            {{#if this.isBestSeller}}
-                            <div class="bestseller-flag">
-                                Best Seller                                    
-                            </div>
-                            {{else}}
-                                <div class="no-promo-flag"></div>
-                            {{/if}}                                 
-                            <p class="product-title">
-                                {{this.name}}
-                            </p>           
-                            <div class="products-image-container">
-                                 <img  src="{{this.image_url}}" />
-                            </div>             
-                            <p class="description">
-                                {{this.description}}
-                            </p>
-                            <p style="padding-left: 10px;color:brown;">
-                                Price: CDN ${{this.price}}
-                            </p>                                
-                        </div>                                    
-                    {{/each}}                    
-                </div>            
+<div class="container products">
+    <h2 class="title">Product List</h2>
+    <div class="fixed-grid">
+        <div class="fixed-inner">
+            <div class="category-select">
+                <select name="" onchange="if (this.value) window.location.href=this.value">
+                    {{#each allDistinctCategories}}
+                    <option value="/products/{{this}}"><a href="">{{this}}</a></option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="category-bar">
+                <ul class="category-nav">
+                    {{#each allDistinctCategories}}
+                    <li class="category-nav-item{{#if this.isActive}} active{{/if}}"><a
+                            href="/products/{{this.category}}">{{this.text}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="products-container">
+
+                {{#if isUserLoggedin}}
+                {{#each products}}
+                <div class="product-item">
+                    {{#if this.isBestSeller}}
+                    <div class="bestseller-flag">
+                        Best Seller
+                    </div>
+                    {{else}}
+                    <div class="no-promo-flag"></div>
+                    {{/if}}
+                    <p class="product-title">
+                        {{this.name}}
+                    </p>
+                    <div class="products-image-container">
+                        <img src="{{this.image_url}}" />
+                    </div>
+                    <p class="description">
+                        <a href="{{this.product_url}}">{{this.description}}</a>
+                    </p>
+                    <p style="padding-left: 10px;color:brown;">
+                        Price: CDN ${{this.price}}
+                    </p>
+                </div>
+                {{/each}}
+
+                {{else}}
+                {{#each products}}
+                <div class="product-item">
+                    {{#if this.isBestSeller}}
+                    <div class="bestseller-flag">
+                        Best Seller
+                    </div>
+                    {{else}}
+                    <div class="no-promo-flag"></div>
+                    {{/if}}
+                    <p class="product-title">
+                        {{this.name}}
+                    </p>
+                    <div class="products-image-container">
+                        <img src="{{this.image_url}}" />
+                    </div>
+                    <p class="description">
+                        {{this.description}}
+                    </p>
+                    <p style="padding-left: 10px;color:brown;">
+                        Price: CDN ${{this.price}}
+                    </p>
+                </div>
+                {{/each}}
+                {{/if}}
             </div>
         </div>
+    </div>
 </div>

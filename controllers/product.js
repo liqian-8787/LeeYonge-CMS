@@ -5,6 +5,7 @@ const router = express.Router();
 const path = require("path");
 const productModel = require("../model/productSchema");
 const isAuthenticated = require("../middleware/auth");
+const isRegularUserAuth = require("../middleware/authRegularUser");
 
 //Route to direct use to Add Task form
 router.get("/add", isAuthenticated, (req, res) => {
@@ -174,6 +175,25 @@ router.post("/search", (req, res) => {
     req.session.addedProduct = [];
     req.session.generalMessage = [];
     res.redirect("/product/list");
+})
+
+//Route to product description
+router.get("/:id",isRegularUserAuth,(req,res)=>{
+    productModel.findOne({ _id: req.params.id })
+    .then((item)=>{
+        const product = {
+            id:item._id,
+            name:item.name,
+            price:item.price,
+            description:item.description,
+            image_url:item.image_url            
+        }
+        res.render("product/description",{
+            product
+        });
+    })
+    .catch(err => console.log(`${err}`));
+
 })
 
 router.put("/update/:id", (req, res) => {
