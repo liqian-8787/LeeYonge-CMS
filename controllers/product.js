@@ -178,7 +178,7 @@ router.post("/search", (req, res) => {
 })
 
 //Route to product description
-router.get("/:id",isRegularUserAuth,(req,res)=>{
+router.get("/pid=:id",isRegularUserAuth,(req,res)=>{
     productModel.findOne({ _id: req.params.id })
     .then((item)=>{
         const product = {

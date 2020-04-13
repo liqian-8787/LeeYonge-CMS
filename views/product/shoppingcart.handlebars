@@ -1,0 +1,22 @@
+<div class="container">
+    <div>Hello {{userInfo.name}},</div>    
+    
+     <form method="POST" action="/shoppingcart/update">
+        {{#each products}}           
+            <div>
+                product name :{{this.name}}, product price: {{this.price}} ,               
+            </div>   
+            <input type="hidden" name="product_id" id="product_id" value="{{this.id}}" />
+            <label for="purchased_quantity">Quantity</label>
+            <input type="text" name="purchased_quantity" id="purchased_quantity" value="{{this.purchased_quantity}}" />         
+        {{/each}}
+        <br/>
+        <br/>
+        <dv>
+            <input type="submit" value="Update Shopping Cart" />
+        </dv>
+      </form>
+      <br/>
+      <br/>
+    <div>Total value in Cart {{cartInfo.subTotal}}</div>
+</div>

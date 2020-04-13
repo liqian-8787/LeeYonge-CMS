@@ -11,6 +11,7 @@ require('dotenv').config({path:"./config/keys.env"});
 const generalRoutes=require("./controllers/general");
 const userRoutes=require("./controllers/user");
 const productRoutes = require("./controllers/product");
+const shoppingCartRoutes = require("./controllers/shoppingCart");
 
 const amazon = express(); // this creates your express amazon object
 
@@ -58,6 +59,7 @@ amazon.use((req,res,next)=>{
 amazon.use("/",generalRoutes);
 amazon.use("/user",userRoutes);
 amazon.use("/product",productRoutes);
+amazon.use("/shoppingcart",shoppingCartRoutes);
 
 mongoose.connect(process.env.MONGO_DB_CONNECTION_ST, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{

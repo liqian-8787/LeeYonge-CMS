@@ -1,22 +1,31 @@
-
-
-<div>{{product.name}}</div>
-<div>{{product.price}}</div>
-<div>{{product.description}}</div>
-<div></div>
+{{#if message}}
+<div class="container">
+    <div class="alert success-message">
+        {{message}}
+    </div>
+</div>
+{{/if}}
 <div class="container product-description-wrap">
     <div class="product-description_purchase">
         <div class="product-description_image">
             <img src="{{product.image_url}}" />
         </div>
         <div class="product-description-form add-to-cart">
-
-            <form method="POST" action="/shopping-cart">
-                <input type="hidden" value="{{product.id}}" name="product_id" />
-            </form>
+            <div>{{product.name}}</div>
+            <div>{{product.price}}</div>
+            <div>
+                <form method="POST" action="/shoppingcart">
+                    <input type="hidden" value="{{product.id}}" name="product_id" />
+                    <input type="number" placeholder="Purchase quantity" name="quantity" />
+                    <input type="submit" value="Add to Cart" />
+                </form>
+            </div>
         </div>
     </div>
     <div class="product-description_spec">
         {{product.description}}
+    </div>
+    <div>
+        <a href="/shoppingcart">Go to the shoppingcart!</a>
     </div>
 </div>

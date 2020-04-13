@@ -34,7 +34,7 @@ router.get("/",(req,res)=>{
 });
 
 //products router
-router.get("/products/:category?",(req,res)=>{
+router.get("/products/:slug?",(req,res)=>{
     productsModel.find().then((products)=>{
 
         const isUserLoggedin = req.session.userInfo&&req.session.userInfo.role!="Clerk"?true:false;
@@ -45,31 +45,33 @@ router.get("/products/:category?",(req,res)=>{
                 description : product.description,
                 image_url : product.image_url,
                 price : product.price,
-                category:product.category,
+                category:product.category.trim(),
+                slug:product.category.trim().replace(/ +/g,'_'),//replace all spaces in category by one underscore for url
                 isBestSeller:product.isBestSeller,
-                product_url:`/product/${product._id}`,                                                          
+                product_url:`/product/pid=${product._id}`,                                                          
             }
         })
 
         const allCategories = allProducts.map(product=>{
             return{
                 category:product.category,
+                slug:product.slug,
                 text:product.category.replace(/_+|-+/g, ' '),
-                isActive: req.params.category == product.category?true:false    
+                isActive: req.params.slug == product.slug?true:false    
             }
         })  
         //Used for navigation active. [{key:abc, value:cd},{key:abc,value:cd}]
         //Keywords "All" or undefined keywards will consider all category
-        const allCategoryCond = req.params.category=="All" ||typeof(req.params.category) =='undefined'?true:false;
-
+        const allCategoryCond = req.params.slug=="All" ||typeof(req.params.slug) =='undefined'?true:false;
+        
         let allDistinctCategories = allCategories.filter((elem, index, self) => self.findIndex(
             (t) => {return (t.category === elem.category && t.text === elem.text)}) === index); 
       
         /*Always place All selection on top*/
-        allDistinctCategories.unshift({category:"All",text:"All",isActive: allCategoryCond });
-        
-        const searchedProducts =  allCategoryCond ? allProducts : allProducts.filter(product=>product.category==req.params.category);   
-            
+        allDistinctCategories.unshift({category:"All",slug:"All",text:"All",isActive: allCategoryCond });
+
+        const searchedProducts =  allCategoryCond ? allProducts : allProducts.filter(product=>product.slug==req.params.slug);   
+     
         res.render("products",{
             title:"Products",
             headingInfo: "Products",
