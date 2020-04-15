@@ -4,7 +4,7 @@
      <form method="POST" action="/shoppingcart/update">
         {{#each products}}           
             <div>
-                product name :{{this.name}}, product price: {{this.price}} ,               
+                product name :{{this.name}}, product price: ${{this.price}} ,               
             </div>   
             <input type="hidden" name="product_id" id="product_id" value="{{this.id}}" />
             <label for="purchased_quantity">Quantity</label>
@@ -13,10 +13,16 @@
         <br/>
         <br/>
         <dv>
-            <input type="submit" value="Update Shopping Cart" />
+            <input type="submit" value="Update Shopping Cart" /> 
+            <div>
+                <a href="/shoppingcart/checkout" type="button">Check out now</a>
+            </div>
+            <div>
+                <a type="button" class="" href="/products">Continue shopping</a>
+            </div>
         </dv>
       </form>
       <br/>
       <br/>
-    <div>Total value in Cart {{cartInfo.subTotal}}</div>
+    <div>Total value in Cart ${{cartInfo.subTotal}}</div>
 </div>

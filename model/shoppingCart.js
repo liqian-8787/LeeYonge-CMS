@@ -12,9 +12,15 @@ const shoppingCart = new Schema({
     [
         {
             pid: {type:String},
-            quantity:{type:Number}
+            unit_price:{type:Number},
+            quantity:{type:Number},
+            unit_total:{type:Number}
         }
-    ]
+    ],
+    cart_total:{
+        type:Number,
+        default:0
+    }
     
 });
 

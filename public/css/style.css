@@ -100,6 +100,9 @@ img{
     max-width:100%;
     vertical-align: text-top;
 }
+.general-pad{
+  padding:20px;
+}
 @media (max-width: 519px){
   .container {
       margin-right: 15px;

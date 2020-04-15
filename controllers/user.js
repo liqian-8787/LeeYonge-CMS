@@ -91,7 +91,7 @@ router.post("/signup", (req, res) => {
             name: req.body.name,
             email: req.body.email,
             password: req.body.password,
-            role:req.body.role
+            role: req.body.role
         }
         const user = new userModel(newUser);
         userModel.findOne({ email: user.email })
@@ -133,7 +133,7 @@ router.post("/signup", (req, res) => {
 });
 
 //login router
-router.get("/login",(req, res) => {  
+router.get("/login", (req, res) => {
     res.render("login", {
         title: "Log In",
         headingInfo: "Log In",
@@ -142,7 +142,7 @@ router.get("/login",(req, res) => {
             delete data.errorMessage;
             return data;
         }),
-        userInfo:req.session.userInfo
+        userInfo: req.session.userInfo
     });
 });
 
@@ -181,91 +181,87 @@ router.post("/login", (req, res) => {
             loginForm: loginFormData
         });
     }
-    else {        
-        userModel.findOne({email:req.body.email})
-        .then(user=>{
+    else {
+        userModel.findOne({ email: req.body.email })
+            .then(user => {
 
-            const errors= [];
+                const errors = [];
 
-            //email not found
-            if(user==null)
-            {
-                errors.push("Sorry, your email and/or password incorrect");
-                res.render("login",{
-                    title: "Log In",
-                    headingInfo: "Log In",
-                    errors:errors,
-                    loginForm: loginFormModel.getLoginFormData().map(data => {
-                        delete data.value;     //remove properties from data
-                        delete data.errorMessage;
-                        return data;
-                    })
-                })
-
-            }
-
-            //email is found
-            else
-            {
-                
-                bcrypt.compare(req.body.password, user.password)
-                .then(isMatched=>{
-
-                    if(isMatched)
-                    {
-                        console.log(`user auth pass!`)                        
-                        //cretae our sessoin
-                        req.session.userInfo = user;
-
-                        res.redirect("/user/profile");
-                    }
-
-                    else
-                    {
-                        errors.push("Sorry, your email and/or password incorrect ");
-                        res.render("login",{
-                            title: "Log In",
-                            headingInfo: "Log In",
-                            errors:errors,
-                            loginForm: loginFormModel.getLoginFormData().map(data => {
-                                delete data.value;     //remove properties from data
-                                delete data.errorMessage;
-                                return data;
-                            })
+                //email not found
+                if (user == null) {
+                    errors.push("Sorry, your email and/or password incorrect");
+                    res.render("login", {
+                        title: "Log In",
+                        headingInfo: "Log In",
+                        errors: errors,
+                        loginForm: loginFormModel.getLoginFormData().map(data => {
+                            delete data.value;     //remove properties from data
+                            delete data.errorMessage;
+                            return data;
                         })
-                    }
+                    })
 
-                })
-                .catch(err=>console.log(`Error ${err}`));
-            }
+                }
+
+                //email is found
+                else {
+
+                    bcrypt.compare(req.body.password, user.password)
+                        .then(isMatched => {
+
+                            if (isMatched) {
+                                console.log(`user auth pass!`)
+                                //cretae our sessoin
+                                req.session.userInfo = user;
+
+                                res.redirect("/user/profile");
+                            }
+
+                            else {
+                                errors.push("Sorry, your email and/or password incorrect ");
+                                res.render("login", {
+                                    title: "Log In",
+                                    headingInfo: "Log In",
+                                    errors: errors,
+                                    loginForm: loginFormModel.getLoginFormData().map(data => {
+                                        delete data.value;     //remove properties from data
+                                        delete data.errorMessage;
+                                        return data;
+                                    })
+                                })
+                            }
+
+                        })
+                        .catch(err => console.log(`Error ${err}`));
+                }
 
 
-        })
-        .catch(err=>console.log(`Error ${err}`));
+            })
+            .catch(err => console.log(`Error ${err}`));
     }
 });
 
-router.get("/profile",isAuthenticated,dashBoardLoader);
+router.get("/profile", isAuthenticated, dashBoardLoader);
 
 // router.get("/clerkdashboard",(req,res)=>{
 //     console.log(`login as clerk`)
 //     if(req.session.userInfo)
 //     res.render("user/clerkdashboard",{
-        
+
 //     })
 // })
 
 // router.get("/userdashboard",(req,res)=>{
 //     console.log(`login as user`);
 //     res.render("user/userdashboard",{
-        
+
 //     })
 // })
 
-router.get("/logout",(req,res)=>{
+router.get("/logout", (req, res) => {
 
     req.session.destroy();
     res.redirect("/user/login")
-    
+
 })
 module.exports = router;
