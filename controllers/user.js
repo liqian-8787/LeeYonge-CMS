@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const signupFormModel = require("../model/signupForm");
 const loginFormModel = require("../model/loginForm");
 const isAuthenticated = require("../middleware/auth");
-//const dashBoardLoader = require("../middleware/authorization");
+const dashBoardLoader = require("../middleware/authorization");
 //signup router
 router.get("/signup", (req, res) => {
     res.render("signup", {
@@ -241,16 +241,7 @@ router.post("/login", (req, res) => {
     }
 });
 
-router.get("/profile", isAuthenticated, (req,res)=>{
-    if(req.session.userInfo.role=="Clerk")
-    {
-        res.render("user/clerkdashboard",{name:req.session.userInfo.name});
-    }    
-    else
-    {
-        res.render("user/userdashboard",{name:req.session.userInfo.name});
-    }
-});
+router.get("/profile", isAuthenticated, dashBoardLoader);
 
 router.get("/logout", (req, res) => {
 
