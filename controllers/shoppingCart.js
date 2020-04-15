@@ -250,16 +250,16 @@ router.post("/update", isRegularUserAuth, (req, res) => {
     }).catch(err => console.log(`${err}`));
 })
 
-router.get("/checkout", isRegularUserAuth, (req, res) => {
-    let allProductsIds = [];    
+router.get("/checkout", isRegularUserAuth, (req, res) => {        
     shoppingCartModel.findOneAndDelete({ uid: req.session.userInfo._id }).then((cartUserItem) => {       
         const userInfo = {
             name: req.session.userInfo.name,
             email: req.session.userInfo.email
         }       
+        
         allProductsIds = cartUserItem.products.map(p => p.pid);
         productModel.find({ _id: { $in: allProductsIds } }).then((items) => {
-            const productsInCart = items.map(item => {
+            var productsInCart = items.map(item => {
                 return {
                     id: item._id,
                     name: item.name,
@@ -268,13 +268,16 @@ router.get("/checkout", isRegularUserAuth, (req, res) => {
                     image_url: item.image_url
                 }
             })
-            allProductsIds.forEach((id) => {
-                let idx = allProductsIds.indexOf(id);
-                let quantity = Number(cartUserItem.products[idx].quantity);
-                const unit_price = Number(parseFloat(cartUserItem.products[idx].unit_price).toFixed(2));
-                productsInCart[idx].quantity = Number(cartUserItem.products[idx].quantity);
-                productsInCart[idx].unit_total = Number(parseFloat(quantity * unit_price).toFixed(2));
-            })
+            
+            productsInCart.forEach((productInCart)=>{
+                cartUserItem.products.forEach((cartUser) => {
+                    if(cartUser.pid == productInCart.id){
+                        productInCart.quantity = Number(cartUser.quantity);
+                        productInCart.unit_total = Number(parseFloat(cartUser.quantity * cartUser.unit_price).toFixed(2));                    
+                    }    
+                });               
+            })             
+           
             const cartInfo = {
                 cart_total: cartUserItem.cart_total,
                 products: productsInCart
@@ -298,7 +301,7 @@ router.get("/checkout", isRegularUserAuth, (req, res) => {
             const msg = {
                 from: `${process.env.SENDER_EMAIL_ADDRESS}`,
                 to: `${userInfo.email}`,
-                subject: 'Receipt',
+                subject: 'Your Purchase Detial',
                 html:emailTemplate,
             };
             sgMail.send(msg)
