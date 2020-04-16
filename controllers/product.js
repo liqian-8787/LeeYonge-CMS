@@ -23,8 +23,8 @@ router.post("/add", isAuthenticated, (req, res) => {
         isBestSeller: req.body.isBestSeller,
         promotional_price: req.body.promotional_price,
         quantity: req.body.quantity,
-        createdBy:req.session.userInfo.email,
-        updatedBy:req.session.userInfo.email
+        createdBy: req.session.userInfo.email,
+        updatedBy: req.session.userInfo.email
     }
 
     const product = new productModel(newProduct);
@@ -106,10 +106,10 @@ router.get("/list", isAuthenticated, (req, res) => {
 })
 
 router.get("/list/:type", isAuthenticated, (req, res) => {
-    if (req.session.userInfo.role == "Clerk") {        
+    if (req.session.userInfo.role == "Clerk") {
         switch (req.params.type) {
             case "myproduct":
-                productModel.find({updatedBy:req.session.userInfo.email}).then((products) => {
+                productModel.find({ updatedBy: req.session.userInfo.email }).then((products) => {
                     const myProducts = products.map(product => {
                         return {
                             id: product._id,
@@ -129,21 +129,21 @@ router.get("/list/:type", isAuthenticated, (req, res) => {
                         }
                     })
                     let currentOption = req.session.filterCategory;
-                    let allDistinctCategories = [... new Set(allCategories.map(item => item.category))];            
-            
+                    let allDistinctCategories = [... new Set(allCategories.map(item => item.category))];
+
                     allDistinctCategories.push("All");
-            
+
                     if (typeof (req.session.filterCategory) == 'undefined') {
                         currentOption = "All";
                     }
-            
+
                     /*Move select options*/
                     if (allDistinctCategories.indexOf(currentOption) > 0) {
                         let index = allDistinctCategories.indexOf(currentOption);
                         allDistinctCategories.splice(index, 1);
                         allDistinctCategories.unshift(currentOption);
                     }
-            
+
                     const searchedProducts = req.session.filterCategory == "All" || typeof (req.session.filterCategory) == 'undefined' ? myProducts : myProducts.filter(product => product.category == req.session.filterCategory)
                     res.render("product/operation", {
                         products: searchedProducts,
@@ -161,8 +161,8 @@ router.get("/list/:type", isAuthenticated, (req, res) => {
                 res.redirect("/user/login");
                 break;
         }
-    }else{
-        res.redirect("/user/login");               
+    } else {
+        res.redirect("/user/login");
     }
 })
 
@@ -178,46 +178,50 @@ router.post("/search", (req, res) => {
 })
 
 //Route to product description
-router.get("/pid=:id",isRegularUserAuth,(req,res)=>{
+router.get("/pid=:id", isRegularUserAuth, (req, res) => {
     productModel.findOne({ _id: req.params.id })
-    .then((item)=>{
-        const product = {
-            id:item._id,
-            name:item.name,
-            price:item.price,
-            description:item.description,
-            image_url:item.image_url            
-        }
-        res.render("product/description",{
-            product
-        });
-    })
-    .catch(err => console.log(`${err}`));
+        .then((item) => {
+            const product = {
+                id: item._id,
+                name: item.name,
+                price: item.price,
+                description: item.description,
+                image_url: item.image_url
+            }
+            res.render("product/description", {
+                product
+            });
+        })
+        .catch(err => console.log(`${err}`));
 
 })
 
 router.put("/update/:id", (req, res) => {
     productModel.findById(req.params.id)
         .then((products) => {
-            const productInfo =
-            {
-                _id: products._id,
-                name: req.body.name,
-                price: req.body.price,
-                promotional_price: req.body.promotional_price,
-                description: req.body.description,
-                image_url: req.body.image_url,
-                category: req.body.category,
-                isBestSeller: req.body.isBestSeller,
-                quantity: req.body.quantity,
-                updatedBy:req.session.userInfo.email
-            }
-            productModel.updateOne({ _id: req.params.id }, productInfo)
+            req.files.productPic.name = `${req.session.userInfo._id}_${req.files.productPic.name}`;
+            req.files.productPic.path = `/img/upload/${req.files.productPic.name}`;
+            req.files.productPic.mv(`public${req.files.productPic.path}`)
                 .then(() => {
-                    res.redirect("/product/list");
-                })
-                .catch(err => console.log(`Error happened when updating data from the database :${err}`));
-
+                    const productInfo =
+                    {
+                        _id: products._id,
+                        name: req.body.name,
+                        price: req.body.price,
+                        promotional_price: req.body.promotional_price,
+                        description: req.body.description,
+                        image_url: req.files.productPic.path,
+                        category: req.body.category,
+                        isBestSeller: req.body.isBestSeller,
+                        quantity: req.body.quantity,
+                        updatedBy: req.session.userInfo.email
+                    }
+                    productModel.updateOne({ _id: req.params.id }, productInfo)
+                        .then(() => {
+                            res.redirect("/product/list");
+                        })
+                        .catch(err => console.log(`Error happened when updating data from the database :${err}`));
+                }).catch(err => console.log(`Error happened when selecting image from the local disk :${err}`));;
         })
         .catch(err => console.log(`Error happened when pulling from the database :${err}`));
 

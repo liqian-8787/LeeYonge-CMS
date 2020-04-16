@@ -5,7 +5,7 @@
             <div class="category-select">
                 <select name="" onchange="if (this.value) window.location.href=this.value">
                     {{#each allDistinctCategories}}
-                    <option value="/products/{{this.slug}}"><a href="">{{this}}</a></option>
+                    <option value="/products/{{this.slug}}"><a href="">{{this.text}}</a></option>
                     {{/each}}
                 </select>
             </div>

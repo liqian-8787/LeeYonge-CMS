@@ -23,7 +23,7 @@
     <div class="product-operations">
         <h3>Edit/Delete Products:</h3>
         {{#each products}}
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <div class="form-group-field">
                     <label for="name">Product name:</label>
@@ -42,8 +42,8 @@
                     <input type="text" id="category" name="category" value="{{this.category}}">
                 </div>
                 <div class="form-group-field">
-                    <label for="image_url">Image path:</label>
-                    <input type="text" id="image_url" name="image_url" value="{{this.image_url}}">
+                    <label>Upload Product Image:</label>
+                    <input type="file" name="productPic" id="productPic">
                 </div>
 
                 {{#if this.image_url}}
