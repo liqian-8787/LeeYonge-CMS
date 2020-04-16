@@ -213,7 +213,6 @@ router.post("/login", (req, res) => {
                                 console.log(`user auth pass!`)
                                 //cretae our sessoin
                                 req.session.userInfo = user;
-
                                 res.redirect("/user/profile");
                             }
 
@@ -242,7 +241,13 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/profile", isAuthenticated, (req,res)=>{
-    res.render("user/userdashboard",{user:req.session.userInfo})
+    console.log(req.session.userInfo.name);
+    if(req.session.userInfo.role == "Clerk"){
+        res.redirect("/product/list")
+    }else{
+        res.redirect("/products")
+    }
+    
 });
 
 router.get("/logout", (req, res) => {
