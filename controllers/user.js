@@ -242,7 +242,7 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/profile", isAuthenticated, (req,res)=>{
-    res.redirect("/products")
+    res.render("user/userdashboard",{user:req.session.userInfo})
 });
 
 router.get("/logout", (req, res) => {
