@@ -13,7 +13,7 @@
         {{#each loginForm}}
             <div class="form-group-field">
                 <label for="{{this.label}}">{{this.labelText}}</label>
-                <input type="text" id="{{this.label}}" name="{{this.label}}">           
+                <input type="{{this.type}}" id="{{this.label}}" name="{{this.label}}">           
                 {{#if this.errorMessage}}
                     <div class='validation error-message margin-10-top'>{{errorMessage}}</div> 
                 {{/if}}

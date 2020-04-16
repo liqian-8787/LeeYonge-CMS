@@ -6,7 +6,8 @@ const loginForm=
         this.loginFormData.push(
             {
                 label:'email',
-                labelText:`Email`          
+                labelText:`Email`  ,
+                type:`text`         
             }
         );       
         
@@ -15,7 +16,7 @@ const loginForm=
                 label:'password',
                 labelText:`Password` ,
                 placeHolder:`Between 6 to 12 characters` ,
-                            
+                type:`password`      
             }
         ); 
     },
