@@ -198,10 +198,11 @@ router.get("/pid=:id", isRegularUserAuth, (req, res) => {
 
 router.put("/update/:id", (req, res) => {
     productModel.findById(req.params.id)
-        .then((products) => {
-            req.files.productPic.name = `${req.session.userInfo._id}_${req.files.productPic.name}`;
-            req.files.productPic.path = `/img/upload/${req.files.productPic.name}`;
-            req.files.productPic.mv(`public${req.files.productPic.path}`)
+        .then((products) => { 
+            if(req.files!=null){       
+                req.files.productPic.name = `${req.session.userInfo._id}_${req.files.productPic.name}`;
+                req.files.productPic.path = `/img/upload/${req.files.productPic.name}`;            
+                req.files.productPic.mv(`public${req.files.productPic.path}`)
                 .then(() => {
                     const productInfo =
                     {
@@ -222,6 +223,26 @@ router.put("/update/:id", (req, res) => {
                         })
                         .catch(err => console.log(`Error happened when updating data from the database :${err}`));
                 }).catch(err => console.log(`Error happened when selecting image from the local disk :${err}`));;
+            } else {
+                const productInfo =
+                    {
+                        _id: products._id,
+                        name: req.body.name,
+                        price: req.body.price,
+                        promotional_price: req.body.promotional_price,
+                        description: req.body.description,
+                        image_url: products.image_url,
+                        category: req.body.category,
+                        isBestSeller: req.body.isBestSeller,
+                        quantity: req.body.quantity,
+                        updatedBy: req.session.userInfo.email
+                    }
+                    productModel.updateOne({ _id: req.params.id }, productInfo)
+                        .then(() => {
+                            res.redirect("/product/list");
+                        })
+                        .catch(err => console.log(`Error happened when updating data from the database :${err}`));
+            }          
         })
         .catch(err => console.log(`Error happened when pulling from the database :${err}`));
 

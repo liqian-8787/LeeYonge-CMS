@@ -332,6 +332,11 @@ ul.navbar-nav .nav-item.active>a.nav-link:after {
   font-size: 20px;
   text-decoration: none;
 }
+.nav .cart-icon path{
+  fill:#fff;
+  align-items: center;
+  display: flex;
+}
 .nav.nav-desktop,
 .nav.nav.nav-mobile{
   margin-top: 0;
@@ -383,7 +388,9 @@ margin-bottom:10px;
   text-decoration:none;
 }
 .category-nav-item.active{
-  background-color:#232f3e;  
+  background-color:#232f3e;   
+  padding:5px;
+  text-decoration: underline;
 }
 .category-nav-item.active > a{
   color:#fff;  

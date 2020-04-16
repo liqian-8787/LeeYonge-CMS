@@ -1,6 +1,7 @@
 const express = require("express"); 
 const router = express.Router(); 
 
+const fixedWidthString =require('fixed-width-string');
 const productsModel =  require("../model/productSchema");
 const productCategoryModel = require("../model/productCategory");
 
@@ -38,10 +39,13 @@ router.get("/products/:slug?",(req,res)=>{
     productsModel.find().then((products)=>{
 
         const isUserLoggedin = req.session.userInfo&&req.session.userInfo.role!="Clerk"?true:false;
-
+        
         const allProducts = products.map(product=>{
+            // const shortDescription=product.description.split('      ');
+            // console.log(shortDescription);
             return{
                 name : product.name,
+                shortDescription:fixedWidthString(product.description,100),
                 description : product.description,
                 image_url : product.image_url,
                 price : product.price,
@@ -51,7 +55,7 @@ router.get("/products/:slug?",(req,res)=>{
                 product_url:`/product/pid=${product._id}`,                                                          
             }
         })
-
+       
         const allCategories = allProducts.map(product=>{
             return{
                 category:product.category,
