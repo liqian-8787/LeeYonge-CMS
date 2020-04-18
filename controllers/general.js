@@ -4,13 +4,13 @@ const router = express.Router();
 const fixedWidthString =require('fixed-width-string');
 const productsModel =  require("../model/productSchema");
 const productCategoryModel = require("../model/productCategory");
-
+const isRegularUserAuth = require("../middleware/authRegularUser");
 
 //home router
 router.get("/",(req,res)=>{
     productsModel.find().then((products)=>{
         const allProducts = products.map(product=>{           
-            return{
+            return{                
                 name : product.name,
                 description : product.description,
                 image_url : product.image_url,
@@ -18,7 +18,8 @@ router.get("/",(req,res)=>{
                 category:product.category,
                 isBestSeller:product.isBestSeller,
                 promotional_price:product.promotional_price,
-                quantity:product.quantity             
+                quantity:product.quantity,
+                product_url:req.session.userInfo?`/product/pid=${product._id}`:""             
             }           
         })        
         const bestSeller = allProducts.filter(product=>product.isBestSeller);

@@ -8,7 +8,13 @@
                     </p>
 
                     <div class="promotion-image-container">
-                        <img class="image-format" src="{{this.image_url}}" />
+                        {{#if this.product_url}}
+                            <a href="{{this.product_url}}">
+                            <img class="image-format" src="{{this.image_url}}" />
+                            </a>
+                        {{else}}
+                            <img class="image-format" src="{{this.image_url}}" />
+                        {{/if}}
                     </div>  
                     <span>Listing price: <span class="product-original-price text-strikethrough">${{this.price}}</span> </span>
                     <p>Promotional Price: <span class="product-promotional-price">${{this.promotional_price}}</span></p>                                        
@@ -41,7 +47,13 @@
                             {{this.name}}
                     </p>
                     <div class="seller-image-container">
-                    <img class="image-format" src="{{this.image_url}}" />
+                        {{#if this.product_url}}
+                        <a href="{{this.product_url}}">
+                         <img class="image-format" src="{{this.image_url}}" />
+                        </a>
+                        {{else}}
+                        <img class="image-format" src="{{this.image_url}}" />
+                        {{/if}}
                     </div>
                   </div>
              {{/each}}    
