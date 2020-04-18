@@ -240,20 +240,9 @@ router.post("/login", (req, res) => {
     }
 });
 
-router.get("/profile", isAuthenticated, (req,res)=>{
-    console.log(req.session.userInfo.name);
-    if(req.session.userInfo.role == "Clerk"){
-      //  res.redirect("/product/list")
-      res.render(`clerkdashboard`,{user:req.session.userInfo})
-    }else{
-      //  res.redirect("/products")
-      res.render(`userdashboard`,{user:req.session.userInfo})
-    }
-    
-});
+router.get("/profile", isAuthenticated, dashBoardLoader);
 
 router.get("/logout", (req, res) => {
-
     req.session.destroy();
     res.redirect("/user/login")
 
