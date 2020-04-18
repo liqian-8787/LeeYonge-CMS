@@ -244,10 +244,10 @@ router.get("/profile", isAuthenticated, (req,res)=>{
     console.log(req.session.userInfo.name);
     if(req.session.userInfo.role == "Clerk"){
       //  res.redirect("/product/list")
-      res.render(`user/clerkdashboard`,{user:req.session.userInfo})
+      res.render(`clerkdashboard`,{user:req.session.userInfo})
     }else{
       //  res.redirect("/products")
-      res.render(`user/userdashboard`,{user:req.session.userInfo})
+      res.render(`userdashboard`,{user:req.session.userInfo})
     }
     
 });
