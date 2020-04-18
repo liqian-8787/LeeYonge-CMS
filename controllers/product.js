@@ -8,8 +8,8 @@ const isAuthenticated = require("../middleware/auth");
 const isRegularUserAuth = require("../middleware/authRegularUser");
 
 //Route to direct use to Add Task form
-router.get("/add", isAuthenticated, (req, res) => {
-    //res.render("Task/taskAddForm");
+router.get("/add", isAuthenticated, (req, res) => {    
+    res.redirect(`/products`);
 });
 
 //Route to process user's request and data when the user submits the add task form
@@ -166,8 +166,8 @@ router.get("/list/:type", isAuthenticated, (req, res) => {
     }
 })
 
-router.get("/search", (req, res) => {
-    //res.redirect("/product/list");
+router.get("/search", isAuthenticated,(req, res) => {
+    res.redirect("/product/list");
 })
 
 router.post("/search", (req, res) => {

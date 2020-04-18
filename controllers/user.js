@@ -243,9 +243,11 @@ router.post("/login", (req, res) => {
 router.get("/profile", isAuthenticated, (req,res)=>{
     console.log(req.session.userInfo.name);
     if(req.session.userInfo.role == "Clerk"){
-        res.redirect("/product/list")
+      //  res.redirect("/product/list")
+      res.render(`user/clerkdashboard`,{user:req.session.userInfo})
     }else{
-        res.redirect("/products")
+      //  res.redirect("/products")
+      res.render(`user/userdashboard`,{user:req.session.userInfo})
     }
     
 });
