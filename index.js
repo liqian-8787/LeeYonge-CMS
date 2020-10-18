@@ -1,4 +1,4 @@
-const express = require("express"); //this imports the express package that was installed within your amazonlication
+const express = require("express"); //this imports the express package that was installed within your amazon application
 const exphbs= require("express-handlebars");
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -6,6 +6,7 @@ const session = require('express-session');
 const fileUpload = require('express-fileupload');
 
 require('dotenv').config({path:"./config/keys.env"});
+
 
 //load controller
 const generalRoutes=require("./controllers/general");

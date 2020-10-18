@@ -95,16 +95,16 @@ router.post("/", isRegularUserAuth, (req, res) => {
                         unit_total: parseFloat(newQuantity * item.price).toFixed(2)
                     }
 
-                    console.log(`product id is: ${productInCart.pid}; unit price is: ${productInCart.unit_price}; unit quantity is: ${productInCart.quantity}`);
+                    // console.log(`product id is: ${productInCart.pid}; unit price is: ${productInCart.unit_price}; unit quantity is: ${productInCart.quantity}`);
 
                     shoppingCartModel.updateOne({ uid: cart.uid }, { "$pull": { "products": { "pid": productInCart.pid } } }).then(() => {
                         shoppingCartModel.updateOne({ uid: cart.uid }, { $push: { products: productInCart } }).then(() => {
                             shoppingCartModel.findOne({ uid: cart.uid }).then((cartProducts) => {
                                 const subTotal = cartProducts.products.map(product => (product.unit_price * product.quantity)).reduce((x, y) => { return (x + y) }).toFixed(2);
                                 shoppingCartModel.updateOne({ uid: cart.uid }, { $set: { cart_total: subTotal } }).then(() => {
-                                    console.log(`new product information in cart is updated`);
-                                    console.log(`cart total is updated to ${subTotal}!`)
-                                    console.log(cartProducts);
+                                    // console.log(`new product information in cart is updated`);
+                                    // console.log(`cart total is updated to ${subTotal}!`)
+                                    // console.log(cartProducts);
                                     genericMessage = `new product information in cart is updated`;
                                     res.redirect(`/product/pid=${productInCart.pid}`)
                                 })
@@ -125,14 +125,14 @@ router.post("/", isRegularUserAuth, (req, res) => {
                         inventory: (item.quantity) ? item.quantity : 0,
                         unit_total: parseFloat(cart.products[0].quantity * item.price).toFixed(2)
                     }
-                    console.log(`product id is: ${productInCart.pid}; unit price is: ${productInCart.unit_price}; unit quantity is: ${productInCart.quantity}`);
+                    // console.log(`product id is: ${productInCart.pid}; unit price is: ${productInCart.unit_price}; unit quantity is: ${productInCart.quantity}`);
                     shoppingCartModel.updateMany({ uid: cart.uid }, { $push: { products: productInCart } }).then(() => {
                         shoppingCartModel.findOne({ uid: cart.uid }).then((cartProducts) => {
                             const subTotal = cartProducts.products.map(product => (product.unit_price * product.quantity)).reduce((x, y) => { return (x + y) }).toFixed(2);
                             shoppingCartModel.updateOne({ uid: cart.uid }, { $set: { cart_total: subTotal } }).then(() => {
-                                console.log(`new product information in cart is updated`);
-                                console.log(`cart total is updated to ${subTotal}!`)
-                                console.log(cartProducts);
+                                // console.log(`new product information in cart is updated`);
+                                // console.log(`cart total is updated to ${subTotal}!`)
+                                // console.log(cartProducts);
                                 genericMessage = `new product information in cart is updated`;
                                 res.redirect(`/product/pid=${productInCart.pid}`)
                             })
@@ -239,9 +239,7 @@ router.post("/update", isRegularUserAuth, (req, res) => {
                             })
                         });
                     })
-
                 })
-
             })
         }
         else {
@@ -313,7 +311,6 @@ router.get("/checkout", isRegularUserAuth, (req, res) => {
                     console.log(`Error ${err}`);
                 })
         })
-
     })
 })
 

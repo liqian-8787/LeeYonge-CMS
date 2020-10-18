@@ -34,7 +34,7 @@ router.post("/add", isAuthenticated, (req, res) => {
             req.session.generalMessage = [];
             req.files.productPic.name = `${req.session.userInfo._id}_${req.files.productPic.name}`;
             req.files.productPic.path = `/img/upload/${req.files.productPic.name}`;
-            req.files.productPic.mv(`public${req.files.productPic.path}`)
+            req.files.productPic.mv(`public${req.files.productPic.path}`)  //Use the mv() method to place the file in public directory 
                 .then(() => {
                     productModel.updateOne({ _id: item._id }, {//update image url by id
                         image_url: req.files.productPic.path
@@ -42,6 +42,7 @@ router.post("/add", isAuthenticated, (req, res) => {
                         res.redirect("/product/list");
                     })
                 })
+
             // res.redirect("/product/list")         
         })
         .catch(err => console.log(`Error happened when inserting product in the database :${err}`));
