@@ -1,40 +1,41 @@
 const express = require("express");
 const router = express.Router();
-
 const fixedWidthString = require('fixed-width-string');
 const productsModel = require("../model/productSchema");
 const productCategoryModel = require("../model/productCategory");
 const isRegularUserAuth = require("../middleware/authRegularUser");
-
 const productsWithBase64Img = require("../model/awsSyncProduct");
 
 //home router
 router.get("/", (req, res) => {
     productsModel.find().then((products) => {
-        const allProducts = products.map(product => {
+        productsWithBase64Img.allProductsWithAWSImages(products).then(
+            (refinedProducts) => {
+                const allProducts = refinedProducts.map(product => ({
 
-            return {
-                name: product.name,
-                description: product.description,
-                image_url: product.image_url,
-                price: product.price,
-                category: product.category,
-                isBestSeller: product.isBestSeller,
-                promotional_price: product.promotional_price,
-                quantity: product.quantity,
-                product_url: req.session.userInfo ? `/product/pid=${product._id}` : ""
+                    name: product.name,
+                    description: product.description,
+                    image_url: product.image_url,
+                    price: product.price,
+                    category: product.category,
+                    isBestSeller: product.isBestSeller,
+                    promotional_price: product.promotional_price,
+                    quantity: product.quantity,
+                    product_url: req.session.userInfo ? `/product/pid=${product._id}` : ""
+
+                }))
+                const bestSeller = allProducts.filter(product => product.isBestSeller);
+                const allPromolProducts = allProducts.filter(product => product.promotional_price && (product.promotional_price < product.price));
+
+                res.render("home", {
+                    title: "Home",
+                    headingInfo: "Home",
+                    promotionForm: allPromolProducts,
+                    productCategory: productCategoryModel.getProductCategory(),
+                    bestSeller: bestSeller
+                });
             }
-        })
-        const bestSeller = allProducts.filter(product => product.isBestSeller);
-        const allPromolProducts = allProducts.filter(product => product.promotional_price && (product.promotional_price < product.price));
-
-        res.render("home", {
-            title: "Home",
-            headingInfo: "Home",
-            promotionForm: allPromolProducts,
-            productCategory: productCategoryModel.getProductCategory(),
-            bestSeller: bestSeller
-        });
+        );
     })
 });
 
@@ -44,18 +45,18 @@ router.get("/products/:slug?", (req, res) => {
         const isUserLoggedin = req.session.userInfo && req.session.userInfo.role != "Clerk" ? true : false;
         productsWithBase64Img.allProductsWithAWSImages(products).then(
             (refinedProducts) => {
-                const allProducts = refinedProducts.map(product=>({
-                    name:product.name,
+                const allProducts = refinedProducts.map(product => ({
+                    name: product.name,
                     shortDescription: fixedWidthString(product.description, 100),
-                    image_url:product.image_url,
-                    description:product.description,
-                    price:product.price,
+                    image_url: product.image_url,
+                    description: product.description,
+                    price: product.price,
                     category: product.category.trim(),
                     slug: product.category.trim().replace(/ +/g, '_'),//replace all spaces in category by one underscore for url
-                    isBestSeller:product.isBestSeller,
+                    isBestSeller: product.isBestSeller,
                     product_url: `/product/pid=${product._id}`,
                 }))
-               
+
                 const allCategories = allProducts.map(product => {
                     return {
                         category: product.category,
@@ -83,7 +84,6 @@ router.get("/products/:slug?", (req, res) => {
                 });
             }
         );
-
     })
 });
 

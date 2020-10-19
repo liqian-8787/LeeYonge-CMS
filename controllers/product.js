@@ -126,7 +126,7 @@ router.get("/list/:type", isAuthenticated, (req, res) => {
                                 isBestSeller: product.isBestSeller,
                                 promotional_price: product.promotional_price,
                                 quantity: product.quantity
-                            }))                            
+                            }))
                             const allCategories = myProducts.map(product => {
                                 return {
                                     category: product.category
@@ -206,9 +206,31 @@ router.get("/pid=:id", isRegularUserAuth, (req, res) => {
 router.put("/update/:id", (req, res) => {
     productModel.findById(req.params.id)
         .then((product) => {
-            req.files.productPic.name = `${req.session.userInfo._id}_${req.files.productPic.name}`;
-            req.files.productPic.path = `/img/upload/${req.files.productPic.name}`;
-            productsWithBase64Img.uploadProductImage(req.files.productPic).then(() => {
+            if (req.files) {
+                req.files.productPic.name = `${req.session.userInfo._id}_${req.files.productPic.name}`;
+                req.files.productPic.path = `/img/upload/${req.files.productPic.name}`;
+                productsWithBase64Img.uploadProductImage(req.files.productPic).then(() => {
+                    const productInfo =
+                    {
+                        _id: product._id,
+                        name: req.body.name,
+                        price: req.body.price,
+                        promotional_price: req.body.promotional_price,
+                        description: req.body.description,
+                        image_url: req.files.productPic.name,
+                        category: req.body.category,
+                        isBestSeller: req.body.isBestSeller,
+                        quantity: req.body.quantity,
+                        updatedBy: req.session.userInfo.email
+                    }
+                    productModel.updateOne({ _id: req.params.id }, productInfo)
+                        .then(() => {
+                            res.redirect("/product/list");
+                        })
+                        .catch(err => console.log(`Error happened when updating data from the database :${err}`));
+
+                });
+            } else if (product.image_url) {
                 const productInfo =
                 {
                     _id: product._id,
@@ -216,7 +238,7 @@ router.put("/update/:id", (req, res) => {
                     price: req.body.price,
                     promotional_price: req.body.promotional_price,
                     description: req.body.description,
-                    image_url: req.files.productPic.name,
+                    image_url: product.image_url,
                     category: req.body.category,
                     isBestSeller: req.body.isBestSeller,
                     quantity: req.body.quantity,
@@ -228,7 +250,14 @@ router.put("/update/:id", (req, res) => {
                     })
                     .catch(err => console.log(`Error happened when updating data from the database :${err}`));
 
-            });            
+
+            } else {
+                console.log(`need an image for the product!`)
+            }
+            if (product.image_url) {
+                //productsWithBase64Img.getImage(s3bucket)
+            }
+
         })
         .catch(err => console.log(`Error happened when pulling from the database :${err}`));
 

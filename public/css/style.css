@@ -70,8 +70,7 @@ main{
 .nav>li {
     display: inline-block;
     width:initial;
-   padding-right: 25px;
-   padding-left: 25px;
+   padding:3px 25px 0 25px;
    border-right: 1px solid #aaa;
    font-size:1.3em;
   }
