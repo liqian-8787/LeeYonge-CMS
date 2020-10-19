@@ -167,7 +167,8 @@ img{
     width:100%;
 }
 .best-seller-item-wrapper>.best-seller-item{
-    min-width:270px;  
+    min-width:270px;
+    margin-bottom: 20px;  
 }
 .seller-image-container{
     height:200px;
