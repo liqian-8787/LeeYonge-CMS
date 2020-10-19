@@ -1,0 +1,74 @@
+const AWS = require('aws-sdk');
+
+const BUCKET_NAME = process.env.BUCKET_NAME;
+const IAM_USER_KEY = process.env.IAM_USER_KEY;
+const IAM_USER_SECRET = process.env.IAM_USER_SECRET;
+const s3bucket = new AWS.S3({
+    accessKeyId: IAM_USER_KEY,
+    secretAccessKey: IAM_USER_SECRET,
+    Bucket: BUCKET_NAME
+});
+
+const awsSyncProduct =
+{
+    getImage(s3bucket, imageName) {
+        return new Promise((resolve, reject) => {
+            s3bucket.getObject({
+                Bucket: BUCKET_NAME, // Assuming this is an environment variable...
+                Key: imageName
+            }, (err, data) => {
+                if (err) reject(err)
+                else resolve(data)
+            })
+        })
+    },
+    encode(data) {
+        let buf = Buffer.from(data);
+        let base64 = buf.toString('base64');
+        return base64
+    },
+    allProductsWithAWSImages(products) {
+        let counter = 0;
+        let allProducts = [];
+        return new Promise((resolve, reject) => {
+            products.map(product => {
+                let currentProduct = product;
+                this.getImage(s3bucket, product.image_url)
+                    .then((img) => {
+                        currentProduct.image_url = `data:image/jpeg;base64,${this.encode(img.Body)}`;
+                    }).catch(e => {
+                        currentProduct.image_url = product.image_url;
+                    }).finally(() => {
+                        counter++;
+                        allProducts.push(currentProduct);
+                        if (counter === products.length) {
+                            resolve(allProducts);
+                        }
+                    })
+            });
+        })
+    },
+    uploadProductImage(file){
+        return new Promise((resolve,reject)=>{
+            s3bucket.createBucket(function () {
+                var params = {
+                    Bucket: BUCKET_NAME,                  
+                    Key:file.name,
+                    Body:file.data
+                };
+                s3bucket.upload(params, function (err, data) {
+                    if (err) {
+                        console.log('error in callback');
+                        console.log(err);      
+                        reject(err);                                   
+                    }                   
+                    resolve(data);                   
+                });
+            });
+
+        })
+        
+    }
+}
+
+module.exports = awsSyncProduct;
