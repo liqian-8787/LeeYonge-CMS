@@ -6,16 +6,6 @@ const productModel = require("../model/productSchema");
 const isAuthenticated = require("../middleware/auth");
 const isRegularUserAuth = require("../middleware/authRegularUser");
 const productsWithBase64Img = require("../model/awsSyncProduct");
-const AWS = require('aws-sdk');
-
-const BUCKET_NAME = process.env.BUCKET_NAME;
-const IAM_USER_KEY = process.env.IAM_USER_KEY;
-const IAM_USER_SECRET = process.env.IAM_USER_SECRET;
-const s3bucket = new AWS.S3({
-    accessKeyId: IAM_USER_KEY,
-    secretAccessKey: IAM_USER_SECRET,
-    Bucket: BUCKET_NAME
-});
 
 //Route to direct use to Add Task form
 router.get("/add", isAuthenticated, (req, res) => {
@@ -39,12 +29,12 @@ router.post("/add", isAuthenticated, (req, res) => {
 
     const product = new productModel(newProduct);
     product.save()
-        .then((item) => {          
+        .then((item) => {
 
             req.session.addedProduct = item;
             req.session.generalMessage = [];
             req.files.productPic.name = `${req.session.userInfo._id}_${req.files.productPic.name}`;
-           
+
             productsWithBase64Img.uploadProductImage(req.files.productPic).then(() => {
                 productModel.updateOne({ _id: item._id }, {//update image url by id
                     image_url: req.files.productPic.name
@@ -136,8 +126,7 @@ router.get("/list/:type", isAuthenticated, (req, res) => {
                                 isBestSeller: product.isBestSeller,
                                 promotional_price: product.promotional_price,
                                 quantity: product.quantity
-                            }))
-                            console.log(myProducts[0])
+                            }))                            
                             const allCategories = myProducts.map(product => {
                                 return {
                                     category: product.category
@@ -216,40 +205,18 @@ router.get("/pid=:id", isRegularUserAuth, (req, res) => {
 
 router.put("/update/:id", (req, res) => {
     productModel.findById(req.params.id)
-        .then((products) => {
-            if (req.files != null) {
-                req.files.productPic.name = `${req.session.userInfo._id}_${req.files.productPic.name}`;
-                req.files.productPic.path = `/img/upload/${req.files.productPic.name}`;
-                req.files.productPic.mv(`public${req.files.productPic.path}`)
-                    .then(() => {
-                        const productInfo =
-                        {
-                            _id: products._id,
-                            name: req.body.name,
-                            price: req.body.price,
-                            promotional_price: req.body.promotional_price,
-                            description: req.body.description,
-                            image_url: req.files.productPic.path,
-                            category: req.body.category,
-                            isBestSeller: req.body.isBestSeller,
-                            quantity: req.body.quantity,
-                            updatedBy: req.session.userInfo.email
-                        }
-                        productModel.updateOne({ _id: req.params.id }, productInfo)
-                            .then(() => {
-                                res.redirect("/product/list");
-                            })
-                            .catch(err => console.log(`Error happened when updating data from the database :${err}`));
-                    }).catch(err => console.log(`Error happened when selecting image from the local disk :${err}`));;
-            } else {
+        .then((product) => {
+            req.files.productPic.name = `${req.session.userInfo._id}_${req.files.productPic.name}`;
+            req.files.productPic.path = `/img/upload/${req.files.productPic.name}`;
+            productsWithBase64Img.uploadProductImage(req.files.productPic).then(() => {
                 const productInfo =
                 {
-                    _id: products._id,
+                    _id: product._id,
                     name: req.body.name,
                     price: req.body.price,
                     promotional_price: req.body.promotional_price,
                     description: req.body.description,
-                    image_url: products.image_url,
+                    image_url: req.files.productPic.name,
                     category: req.body.category,
                     isBestSeller: req.body.isBestSeller,
                     quantity: req.body.quantity,
@@ -260,7 +227,8 @@ router.put("/update/:id", (req, res) => {
                         res.redirect("/product/list");
                     })
                     .catch(err => console.log(`Error happened when updating data from the database :${err}`));
-            }
+
+            });            
         })
         .catch(err => console.log(`Error happened when pulling from the database :${err}`));
 
