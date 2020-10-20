@@ -5,7 +5,7 @@ const path = require("path");
 const productModel = require("../model/productSchema");
 const isAuthenticated = require("../middleware/auth");
 const isRegularUserAuth = require("../middleware/authRegularUser");
-const productsWithBase64Img = require("../model/awsSyncProduct");
+const productsWithAWSUrl = require("../model/awsSyncProduct");
 
 //Route to direct use to Add Task form
 router.get("/add", isAuthenticated, (req, res) => {
@@ -35,7 +35,7 @@ router.post("/add", isAuthenticated, (req, res) => {
             req.session.generalMessage = [];
             req.files.productPic.name = `${req.session.userInfo._id}_${req.files.productPic.name}`;
 
-            productsWithBase64Img.uploadProductImage(req.files.productPic).then(() => {
+            productsWithAWSUrl.uploadProductImage(req.files.productPic).then(() => {
                 productModel.updateOne({ _id: item._id }, {//update image url by id
                     image_url: req.files.productPic.name
                 }).then(() => {
@@ -50,7 +50,7 @@ router.post("/add", isAuthenticated, (req, res) => {
 
 router.get("/list", isAuthenticated, (req, res) => {
     productModel.find().then((products) => {
-        productsWithBase64Img.allProductsWithAWSImages(products).then(
+        productsWithAWSUrl.allProductsWithPresignedUrl(products).then(
             (refinedProducts) => {
                 const allProducts = refinedProducts.map(product =>
                     ({
@@ -114,7 +114,7 @@ router.get("/list/:type", isAuthenticated, (req, res) => {
         switch (req.params.type) {
             case "myproduct":
                 productModel.find({ updatedBy: req.session.userInfo.email }).then((products) => {
-                    productsWithBase64Img.allProductsWithAWSImages(products).then(
+                    productsWithAWSUrl.allProductsWithPresignedUrl(products).then(
                         (refinedProducts) => {
                             const myProducts = refinedProducts.map(product => ({
                                 id: product._id,
@@ -209,7 +209,7 @@ router.put("/update/:id", (req, res) => {
             if (req.files) {
                 req.files.productPic.name = `${req.session.userInfo._id}_${req.files.productPic.name}`;
                 req.files.productPic.path = `/img/upload/${req.files.productPic.name}`;
-                productsWithBase64Img.uploadProductImage(req.files.productPic).then(() => {
+                productsWithAWSUrl.uploadProductImage(req.files.productPic).then(() => {
                     const productInfo =
                     {
                         _id: product._id,
@@ -255,7 +255,7 @@ router.put("/update/:id", (req, res) => {
                 console.log(`need an image for the product!`)
             }
             if (product.image_url) {
-                //productsWithBase64Img.getImage(s3bucket)
+                //productsWithAWSUrl.getImage(s3bucket)
             }
 
         })

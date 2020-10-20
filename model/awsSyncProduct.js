@@ -22,29 +22,47 @@ const awsSyncProduct =
             })
         })
     },
+    getSignedUrl(imageName) {
+        return new Promise((resolve, reject) => {
+            s3bucket.getSignedUrl('getObject', {              
+                Bucket: BUCKET_NAME,                
+                Key: imageName
+            }, (err, url) => {
+                err ? reject(err) : resolve(url);
+            });
+        })
+    },
     encode(data) {
         let buf = Buffer.from(data);
         let base64 = buf.toString('base64');
         return base64
     },
-    allProductsWithAWSImages(products) {
+    allProductsWithPresignedUrl(products) {
         let counter = 0;
         let allProducts = [];
         return new Promise((resolve, reject) => {
             products.map(product => {
                 let currentProduct = product;
-                this.getImage(s3bucket, product.image_url)
-                    .then((img) => {
-                        currentProduct.image_url = `data:image/jpeg;base64,${this.encode(img.Body)}`;
-                    }).catch(e => {
-                        currentProduct.image_url = product.image_url;
-                    }).finally(() => {
-                        counter++;
-                        allProducts.push(currentProduct);
-                        if (counter === products.length) {
-                            resolve(allProducts);
-                        }
-                    })
+                // this.getImage(s3bucket, product.image_url)
+                //     .then((img) => {
+                //         currentProduct.image_url = `data:image/jpeg;base64,${this.encode(img.Body)}`;
+                //     }).catch(e => {
+                //         currentProduct.image_url = product.image_url;
+                //     }).finally(() => {
+                //         counter++;
+                //         allProducts.push(currentProduct);
+                //         if (counter === products.length) {
+                //             resolve(allProducts);
+                //         }
+                //     })
+                this.getSignedUrl(product.image_url).then((url) => {                  
+                    currentProduct.image_url = url;
+                    counter++;
+                    allProducts.push(currentProduct);
+                    if (counter === products.length) {
+                        resolve(allProducts);
+                    }
+                })
             });
         })
     },

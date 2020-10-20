@@ -4,12 +4,12 @@ const fixedWidthString = require('fixed-width-string');
 const productsModel = require("../model/productSchema");
 const productCategoryModel = require("../model/productCategory");
 const isRegularUserAuth = require("../middleware/authRegularUser");
-const productsWithBase64Img = require("../model/awsSyncProduct");
+const productsWithAWSUrl = require("../model/awsSyncProduct");
 
 //home router
 router.get("/", (req, res) => {
     productsModel.find().then((products) => {
-        productsWithBase64Img.allProductsWithAWSImages(products).then(
+        productsWithAWSUrl.allProductsWithPresignedUrl(products).then(
             (refinedProducts) => {
                 const allProducts = refinedProducts.map(product => ({
 
@@ -43,7 +43,7 @@ router.get("/", (req, res) => {
 router.get("/products/:slug?", (req, res) => {
     productsModel.find().then((products) => {
         const isUserLoggedin = req.session.userInfo && req.session.userInfo.role != "Clerk" ? true : false;
-        productsWithBase64Img.allProductsWithAWSImages(products).then(
+        productsWithAWSUrl.allProductsWithPresignedUrl(products).then(
             (refinedProducts) => {
                 const allProducts = refinedProducts.map(product => ({
                     name: product.name,
