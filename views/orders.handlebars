@@ -7,6 +7,10 @@
                  <div>name:{{this.uid}}</div>
                      {{#each this.orders}}
                              <div>cart Total:{{this.cart_total}}</div>
+                              {{#each this.products}}
+                              <div>{{this.name}}</div>
+                              <div>{{this.price}}</div>
+                              {{/each}}
                      {{/each}}
                 {{/each}}
             {{else}}

@@ -4,20 +4,20 @@ const path = require("path");
 const ordersModel = require("../model/orders");
 const productModel = require("../model/productSchema");
 
+
 const isRegularUserAuth = require("../middleware/authRegularUser");
 
-router.get("/", (req, res) => {
+router.get("/",isRegularUserAuth,(req, res) => {
     ordersModel.find().then(items => {        
-        const allOrders = items.map(item=>{
-            return {                
-                uid:item.uid,
-                orders:_.cloneDeep(item.orders)
-            }
-        })
+        // const allOrders = items.map(item=>{
+        //     return {                
+        //         uid:item.uid,
+        //         orders:items.orders
+        //     }
+        // })
         // const allOrdersNew = _.cloneDeep(items);
         // console.log(allOrdersNew)
-        var allOrdersNew=_.cloneDeep(items);
-        console.log(allOrdersNew)
+       
         // productModel.find({ _id: { $in: allProductsIds } }).then((items) => {
         //     const products = items.map(item => {
         //         return {
@@ -44,7 +44,7 @@ router.get("/", (req, res) => {
         res.render("orders", {
             title: "Orders",
             headingInfo: "Orders",
-            OrdersList: allOrders
+            OrdersList: items
         });
         // console.log(orderedProducts[0].name)
     })

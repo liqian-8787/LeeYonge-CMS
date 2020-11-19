@@ -1,10 +1,12 @@
 const express = require("express"); //this imports the express package that was installed within your leeyonge application
 const exphbs= require("express-handlebars");
+const Handlebars = require("handlebars");
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const fileUpload = require('express-fileupload');
-
+const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
+ 
 require('dotenv').config({path:"./config/keys.env"});
 
 
@@ -19,7 +21,10 @@ const leeyonge = express(); // this creates your express leeyonge object
 leeyonge.use(bodyParser.urlencoded({extended:false}));
 
 //This tells express to set up our template engine has handlebars
-leeyonge.engine("handlebars",exphbs());
+leeyonge.engine('handlebars', exphbs({
+    handlebars: allowInsecurePrototypeAccess(Handlebars)
+}));
+
 leeyonge.set("view engine", "handlebars");
 leeyonge.use(express.static("public"));
 

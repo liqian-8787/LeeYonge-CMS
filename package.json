@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@handlebars/allow-prototype-access": "^1.0.3",
     "@sendgrid/mail": "^6.5.3",
     "aws-sdk": "^2.773.0",
     "bcryptjs": "^2.4.3",
@@ -22,7 +23,10 @@
     "express-session": "^1.17.0",
     "express-validator": "^6.4.0",
     "fixed-width-string": "^1.1.0",
-    "mongoose": "^5.9.7",
-    "underscore": "^1.11.0"
+    "lodash": "^4.17.20",
+    "mongoose": "^5.9.7"
+  },
+  "devDependencies": {
+    "handlebars": "^4.7.6"
   }
 }
