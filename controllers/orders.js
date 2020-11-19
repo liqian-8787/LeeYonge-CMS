@@ -4,10 +4,9 @@ const path = require("path");
 const ordersModel = require("../model/orders");
 const productModel = require("../model/productSchema");
 
+const isAdminLogin = require("../middleware/authAdminUser");
 
-const isRegularUserAuth = require("../middleware/authRegularUser");
-
-router.get("/",isRegularUserAuth,(req, res) => {
+router.get("/",isAdminLogin,(req, res) => {
     ordersModel.find().then(items => {        
         // const allOrders = items.map(item=>{
         //     return {                
