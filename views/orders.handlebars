@@ -1,0 +1,17 @@
+<div class="container orders">
+    <h2>Customer orders</h2>
+    <div class="orders-wrapper">
+        <div>
+            {{#if OrdersList}}
+                {{#each OrdersList}}
+                 <div>name:{{this.uid}}</div>
+                     {{#each this.orders}}
+                             <div>cart Total:{{this.cart_total}}</div>
+                     {{/each}}
+                {{/each}}
+            {{else}}
+                 <div>the order list is empty</div>
+            {{/if}}
+        </div>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-const express = require("express"); //this imports the express package that was installed within your amazon application
+const express = require("express"); //this imports the express package that was installed within your leeyonge application
 const exphbs= require("express-handlebars");
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -12,22 +12,22 @@ require('dotenv').config({path:"./config/keys.env"});
 const generalRoutes=require("./controllers/general");
 const userRoutes=require("./controllers/user");
 const productRoutes = require("./controllers/product");
-const shoppingCartRoutes = require("./controllers/shoppingCart");
+const ordersRoutes = require("./controllers/orders");
 
-const amazon = express(); // this creates your express amazon object
+const leeyonge = express(); // this creates your express leeyonge object
 
-amazon.use(bodyParser.urlencoded({extended:false}));
+leeyonge.use(bodyParser.urlencoded({extended:false}));
 
 //This tells express to set up our template engine has handlebars
-amazon.engine("handlebars",exphbs());
-amazon.set("view engine", "handlebars");
-amazon.use(express.static("public"));
+leeyonge.engine("handlebars",exphbs());
+leeyonge.set("view engine", "handlebars");
+leeyonge.use(express.static("public"));
 
 /*
     This is to allow specific forms and/or links that were submitted/pressed
     to send PUT and DELETE request respectively!!!!!!!
 */
-amazon.use((req,res,next)=>{
+leeyonge.use((req,res,next)=>{
 
     if(req.query.method=="PUT")
     {
@@ -42,25 +42,25 @@ amazon.use((req,res,next)=>{
     next();
 })
 
-amazon.use(fileUpload());
+leeyonge.use(fileUpload());
 
-amazon.use(session({
+leeyonge.use(session({
     secret: `${process.env.SECRET_KEY}`,
     resave: false,
     saveUninitialized: true
   }))
 
-amazon.use((req,res,next)=>{
+leeyonge.use((req,res,next)=>{
     res.locals.user= req.session.userInfo;
     next();
 })
 
 
 // map controller to the object
-amazon.use("/",generalRoutes);
-amazon.use("/user",userRoutes);
-amazon.use("/product",productRoutes);
-amazon.use("/shoppingcart",shoppingCartRoutes);
+leeyonge.use("/",generalRoutes);
+leeyonge.use("/user",userRoutes);
+leeyonge.use("/product",productRoutes);
+leeyonge.use("/orders",ordersRoutes);
 
 mongoose.connect(process.env.MONGO_DB_CONNECTION_ST, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{
@@ -72,7 +72,7 @@ mongoose.connect(process.env.MONGO_DB_CONNECTION_ST, {useNewUrlParser: true, use
 const PORT=process.env.PORT;
 
 //This creates an Express Web Server that listens to incoming HTTP requests.
-amazon.listen(PORT,()=>{
+leeyonge.listen(PORT,()=>{
     console.log(`Web Server Started`);
 });
 
