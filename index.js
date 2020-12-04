@@ -22,7 +22,8 @@ leeyonge.use(bodyParser.urlencoded({extended:false}));
 
 //This tells express to set up our template engine has handlebars
 leeyonge.engine('handlebars', exphbs({
-    handlebars: allowInsecurePrototypeAccess(Handlebars)
+    handlebars: allowInsecurePrototypeAccess(Handlebars),
+    helpers: require("./helpers/handlebars.js").helpers
 }));
 
 leeyonge.set("view engine", "handlebars");

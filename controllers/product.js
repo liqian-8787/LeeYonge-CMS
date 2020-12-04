@@ -47,7 +47,6 @@ router.post("/add", isAuthenticated, (req, res) => {
         .catch(err => console.log(`Error happened when inserting product in the database :${err}`));
 });
 
-
 router.get("/list", isAuthenticated, (req, res) => {
     productModel.find().then((products) => {
         productsWithAWSUrl.allProductsWithPresignedUrl(products).then(
@@ -109,70 +108,6 @@ router.get("/list", isAuthenticated, (req, res) => {
     }).catch(err => console.log(`Error ${err}`));
 })
 
-router.get("/list/:type", isAuthenticated, (req, res) => {
-    if (req.session.userInfo.role == "Clerk") {
-        switch (req.params.type) {
-            case "myproduct":
-                productModel.find({ updatedBy: req.session.userInfo.email }).then((products) => {
-                    productsWithAWSUrl.allProductsWithPresignedUrl(products).then(
-                        (refinedProducts) => {
-                            const myProducts = refinedProducts.map(product => ({
-                                id: product._id,
-                                name: product.name,
-                                description: product.description,
-                                image_url: product.image_url,
-                                price: product.price,
-                                category: product.category,
-                                isBestSeller: product.isBestSeller,
-                                promotional_price: product.promotional_price,
-                                quantity: product.quantity
-                            }))
-                            const allCategories = myProducts.map(product => {
-                                return {
-                                    category: product.category
-                                }
-                            })
-                            let currentOption = req.session.filterCategory;
-                            let allDistinctCategories = [... new Set(allCategories.map(item => item.category))];
-
-                            allDistinctCategories.push("All");
-
-                            if (typeof (req.session.filterCategory) == 'undefined') {
-                                currentOption = "All";
-                            }
-
-                            /*Move select options*/
-                            if (allDistinctCategories.indexOf(currentOption) > 0) {
-                                let index = allDistinctCategories.indexOf(currentOption);
-                                allDistinctCategories.splice(index, 1);
-                                allDistinctCategories.unshift(currentOption);
-                            }
-
-                            const searchedProducts = req.session.filterCategory == "All" || typeof (req.session.filterCategory) == 'undefined' ? myProducts : myProducts.filter(product => product.category == req.session.filterCategory)
-                            res.render("product/operation", {
-                                products: searchedProducts,
-                                allDistinctCategories: allDistinctCategories,
-                                userInfo: req.session.userInfo,
-                                addedProduct: req.session.addedProduct,
-                                generalMessage: req.session.generalMessage
-                            });
-
-                        });
-
-                }).catch(err => console.log(`Error ${err}`));
-                break;
-            case "all":
-                res.redirect("/product/list");
-                break;
-            default:
-                res.redirect("/user/login");
-                break;
-        }
-    } else {
-        res.redirect("/user/login");
-    }
-})
-
 router.get("/search", isAuthenticated, (req, res) => {
     res.redirect("/product/list");
 })
@@ -185,7 +120,7 @@ router.post("/search", (req, res) => {
 })
 
 //Route to product description
-router.get("/pid=:id", isRegularUserAuth, (req, res) => {
+router.get("/pid=:id", isRegularUserAuth, (req, res) => { 
     productModel.findOne({ _id: req.params.id })
         .then((item) => {
             const product = {
@@ -226,6 +161,7 @@ router.put("/update/:id", (req, res) => {
                     productModel.updateOne({ _id: req.params.id }, productInfo)
                         .then(() => {
                             res.redirect("/product/list");
+                            
                         })
                         .catch(err => console.log(`Error happened when updating data from the database :${err}`));
 
@@ -244,6 +180,7 @@ router.put("/update/:id", (req, res) => {
                     quantity: req.body.quantity,
                     updatedBy: req.session.userInfo.email
                 }
+               
                 productModel.updateOne({ _id: req.params.id }, productInfo)
                     .then(() => {
                         res.redirect("/product/list");

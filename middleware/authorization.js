@@ -6,6 +6,7 @@ const dashBoardLoader = (req,res)=>{
     else
     {
         res.render("dashboard/userdashboard",{user:req.session.userInfo});
+      
     }
 }
 module.exports = dashBoardLoader;

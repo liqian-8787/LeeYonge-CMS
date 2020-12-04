@@ -1,20 +1,112 @@
+<script>
+    function disable(val) {
+        var parent = val.parentElement;
+        var inputNodes = parent.querySelectorAll('input');
+        if (val.checked == true) {
+            val.setAttribute('checked', 'checked');
+            for (var i = 1; i < inputNodes.length - 1; ++i) {
+                inputNodes[i].disabled = true;
+                 inputNodes[i].checked = false;
+            }
+        }
+        else {
+             val.removeAttribute('checked', 'checked');
+            for (var i = 1; i < inputNodes.length - 1; ++i) {
+               
+                inputNodes[i].disabled = false;
+            }
+        }
+    }
+
+</script>
+
 <div class="container orders">
+    <p class="clerk-name">Hi, Clerk: {{user}}</p>
     <h2>Customer orders</h2>
     <div class="orders-wrapper">
         <div>
-            {{#if OrdersList}}
-                {{#each OrdersList}}
-                 <div>name:{{this.uid}}</div>
-                     {{#each this.orders}}
-                             <div>cart Total:{{this.cart_total}}</div>
-                              {{#each this.products}}
-                              <div>{{this.name}}</div>
-                              <div>{{this.price}}</div>
-                              {{/each}}
-                     {{/each}}
-                {{/each}}
+            <form method="GET" action="/orders" class="search-orders">
+                <label>Search By</label>
+                <select name="order_filter">
+
+                    <option value="All" {{#if_equals_ignorecase categoryFilter "All"}}selected{{/if_equals_ignorecase}}>
+                        All</option>
+                    <option value="isPaid"
+                        {{#if_equals_ignorecase categoryFilter "isPaid"}}selected{{/if_equals_ignorecase}}>Paid</option>
+                    <option value="isPickedup"
+                        {{#if_equals_ignorecase categoryFilter "isPickedup"}}selected{{/if_equals_ignorecase}}>Picked up
+                    </option>
+                    <option value="isCancelled"
+                        {{#if_equals_ignorecase categoryFilter "isCancelled"}}selected{{/if_equals_ignorecase}}>
+                        Cancelled</option>
+
+                </select>
+                <input type="submit" value="Search" />
+            </form>
+            {{#if filteredOrders}}
+
+            {{#each filteredOrders }}
+            <div class="order-wrap">
+                <p class="uid">uid: {{this.uid}}</p>
+                <ol>
+                    {{#each this.orders}}
+
+                    <li>
+                        <div class="order-info">
+                            <div>
+                                <p class="ordered-quantity">Order Total: ${{this.cart_total}}</p>
+                            </div>
+                            <form method="POST" enctype="multipart/form-data">
+                                <input type="hidden" id="{{../this.uid}}" name="uid" value="{{../this.uid}}" />
+                                <div class="detail-button-group">
+                                    <label for="isCancelled">cancel</label>
+                                    <input type="checkbox" id="isCancelled" name="isCancelled"
+                                        {{#if this.isCancelled}}checked{{/if}} value="true"
+                                        onchange="disable(isCancelled)" />
+
+                                    <label for="isPaid">paid</label>
+                                    <input type="checkbox" id="isPaid" name="isPaid" {{#if this.isCancelled}}disabled{{/if}} {{#if this.isPaid}}checked{{/if}}
+                                        value="true" />
+
+                                    <label for="isPickedUp">picked up</label>
+                                    <input type="checkbox" id="isPickedUp" name="isPickedUp"
+                                        {{#if this.isCancelled}}disabled{{/if}}  {{#if this.isPickedUp}}checked{{/if}} value="true" />
+
+                                    <input class="order-update" type="submit" value="Update"
+                                        formaction="/orders/update/{{this.id}}?method=PUT" />
+                                </div>
+                            </form>
+                        </div>
+                        <p class="ordered-date">{{this.date}}</p>
+                        {{#each this.products}}
+                        <div class="orders-list">
+                            <div class="product-img">
+                                <img src="{{this.image_url}}" />
+                            </div>
+                            <div class="ordered-detail">
+                                <div class="detail-text">
+                                    <p class="detail-product-name">{{this.name}}</p>
+                                    {{#if this.promotional_price}}
+                                    <p>promotion price: ${{this.promotional_price}}</p>
+                                    {{else}}
+                                    <p>unit price: ${{this.price}}</p>
+                                    {{/if}}
+                                    <p>quantity: {{this.quantity}}</p>
+
+                                </div>
+                                {{!-- <input class="order-delete" type="submit" value="Delete"
+                                    formaction="/orders/delete/{{this.id}}?method=DELETE" /> --}}
+                            </div>
+
+                        </div>
+                        {{/each}}
+                    </li>
+                    {{/each}}
+                </ol>
+            </div>
+            {{/each}}
             {{else}}
-                 <div>the order list is empty</div>
+            <div><p>The order list is empty !</p></div>
             {{/if}}
         </div>
     </div>

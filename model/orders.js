@@ -17,9 +17,27 @@ const orderHistorySchema = new Schema({
             price:{type:Number},
             promotional_price:{type:Number},
             description:{type:String},
-            quantity:{type:Number}
+            quantity:{type:Number},
+            
         }],
-        date:{ type:String }
+        updatedBy:{
+            type:String,
+            default:""
+        },
+        isCancelled:
+        {
+            type:Boolean,
+            default:false
+        },
+        isPaid:{
+            type:Boolean,
+            default:false
+        },
+        isPickedUp:{
+            type:Boolean,
+            default:false
+        },
+        date:{ type:Date }
     }]
 });
 

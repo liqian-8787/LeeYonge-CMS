@@ -217,13 +217,13 @@ router.post("/update", isRegularUserAuth, (req, res) => {
                     productsInCart[idx].unit_total = Number(parseFloat(quantity * unit_price).toFixed(2));
                 })
                 console.log(productsInCart);
-                const removeALlCartProducts = productsInCart.map((productInCart) => {
+                const removeAllCartProducts = productsInCart.map((productInCart) => {
                     return shoppingCartModel.updateOne({ uid: req.session.userInfo._id }, { "$pull": { "products": { "pid": productInCart.pid } } }).then(() => {
                         console.log(`${productInCart.pid} is removed`)
 
                     })
                 })
-                Promise.all(removeALlCartProducts).then(() => {
+                Promise.all(removeAllCartProducts).then(() => {
                     const addBackAllCartProducts = productsInCart.map((productInCart) => {
                         return shoppingCartModel.findOneAndUpdate({ uid: req.session.userInfo._id }, { "$push": { "products": productInCart } }).then((cartProducts) => {
                             console.log(`${productInCart.pid} is added`)
