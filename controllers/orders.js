@@ -10,37 +10,37 @@ const { ConnectionStates } = require('mongoose');
 router.get("/", isAdminLogin, (req, res) => {
     const userInfo = req.session.userInfo.name;   
     ordersModel.find().then(items => {
-
         var getPreAssignedProducts = new Promise((resolve,reject)=>{
-            items.forEach((item) => {
-                try {
-                    item.orders.forEach((order,index,array) => {
-                        productsWithAWSUrl.allProductsWithPresignedUrl(order.products).then(
-                            (refinedProducts) => {
-                                const orderedProducts = refinedProducts.map(product => ({
-                                    name: product.name,
-                                    image_url: product.image_url,
-                                    description: product.description,
-                                    price: product.price,
-                                    promotional_price: product.promotional_price,
-                                    quantity: product.quantity
-                                }))
-                                order.products = orderedProducts;
-                                if(index === array.length - 1) resolve(items);
-                            }
-                        )
+            try{
+                if(items.length)
+                    items.forEach((item) => {
+                        item.orders.forEach((order,index,array) => {
+                            productsWithAWSUrl.allProductsWithPresignedUrl(order.products).then(
+                                (refinedProducts) => {
+                                    const orderedProducts = refinedProducts.map(product => ({
+                                        name: product.name,
+                                        image_url: product.image_url,
+                                        description: product.description,
+                                        price: product.price,
+                                        promotional_price: product.promotional_price,
+                                        quantity: product.quantity
+                                    }))
+                                    order.products = orderedProducts;
+                                    if(index === array.length - 1) resolve(items);
+                                }
+                            )
+                        })
                     })
-                } catch (ex) {
-    
-                }
-    
-            })
+                else
+                    resolve(items)
+            }catch(ex){
+                reject(ex);
+            }            
         })
-        
-        const queryParam = req.query.order_filter ? req.query.order_filter : "all";
-        var categoryFilter = "all";
-        getPreAssignedProducts.then(()=>{
-            const newItems = items.map(item => ({
+        getPreAssignedProducts.then((items)=>{              
+            const queryParam = req.query.order_filter ? req.query.order_filter : "all";
+            var categoryFilter = "all";
+            const newItems =items.length? items.map(item => ({
                 ...item._doc, orders: item.orders.filter(order => {
                     if (queryParam.toLocaleLowerCase() === 'ispaid') {
                         categoryFilter = "isPaid";
@@ -60,7 +60,8 @@ router.get("/", isAdminLogin, (req, res) => {
                         return order;
                     }
                 })
-            })).filter(item => item.orders.length > 0);
+            })).filter(item => item.orders.length > 0):items;
+           
             res.render("orders", {
                 title: "Orders",
                 headingInfo: "Orders",
@@ -68,6 +69,8 @@ router.get("/", isAdminLogin, (req, res) => {
                 filteredOrders: newItems,
                 user: userInfo,
             })
+        }).catch(err=>{
+            console.log(err)
         })
       
     })
