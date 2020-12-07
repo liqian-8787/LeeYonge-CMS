@@ -30,7 +30,7 @@ router.get("/", isAdminLogin,(req, res) => {
         const queryParam = req.query.order_filter ? req.query.order_filter : "all";
         var categoryFilter = "all";
         const newItems = items.map(item => ({
-            ...item._doc, orders: item.orders.filter(order => {
+            ...item, orders: item.orders.filter(order => {
                 if (queryParam.toLocaleLowerCase() === 'ispaid'){
                     categoryFilter = "isPaid";
                     return order.isPaid;
