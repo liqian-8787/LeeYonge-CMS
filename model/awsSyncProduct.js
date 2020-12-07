@@ -42,19 +42,7 @@ const awsSyncProduct =
         let allProducts = [];
         return new Promise((resolve, reject) => {
             products.map(product => {
-                let currentProduct = product;
-                // this.getImage(s3bucket, product.image_url)
-                //     .then((img) => {
-                //         currentProduct.image_url = `data:image/jpeg;base64,${this.encode(img.Body)}`;
-                //     }).catch(e => {
-                //         currentProduct.image_url = product.image_url;
-                //     }).finally(() => {
-                //         counter++;
-                //         allProducts.push(currentProduct);
-                //         if (counter === products.length) {
-                //             resolve(allProducts);
-                //         }
-                //     })
+                let currentProduct = product;              
                 this.getSignedUrl(product.image_url).then((url) => {                  
                     currentProduct.image_url = url;
                     counter++;
