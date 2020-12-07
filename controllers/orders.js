@@ -2,15 +2,16 @@ const express = require('express')
 const router = express.Router();
 const path = require("path");
 const ordersModel = require("../model/orders");
-
+const userModel = require("../model/user");
 const productsWithAWSUrl = require("../model/awsSyncProduct");
 const isAdminLogin = require("../middleware/authAdminUser");
+const { ConnectionStates } = require('mongoose');
 
 router.get("/", isAdminLogin,(req, res) => {
     const userInfo = req.session.userInfo.name;
-    ordersModel.find().then(items => {
-        items.map((item) => {
-            item.orders.map(order => {
+    ordersModel.find().then(items => {     
+        items.forEach((item) => {                      
+            item.orders.forEach(order => {
                 productsWithAWSUrl.allProductsWithPresignedUrl(order.products).then(
                     (refinedProducts) => {
                         const orderedProducts = refinedProducts.map(product => ({
@@ -22,9 +23,10 @@ router.get("/", isAdminLogin,(req, res) => {
                             quantity: product.quantity
                         }))
                         order.products = orderedProducts;
-                    });
+                    }
+                );
             })
-        })
+        })       
         const queryParam = req.query.order_filter ? req.query.order_filter : "all";
         var categoryFilter = "all";
         const newItems = items.map(item => ({
@@ -47,7 +49,7 @@ router.get("/", isAdminLogin,(req, res) => {
                 {
                     categoryFilter = "all";
                     return order;
-                }
+                } 
             })
         })).filter(item => item.orders.length > 0);
         res.render("orders", {
@@ -55,7 +57,7 @@ router.get("/", isAdminLogin,(req, res) => {
             headingInfo: "Orders",
             categoryFilter:categoryFilter,
             filteredOrders: newItems,
-            user:userInfo
+            user:userInfo,
         })
     })
 })

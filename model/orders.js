@@ -5,39 +5,44 @@ const orderHistorySchema = new Schema({
 
     uid:
     {
-        type:String,
-        required:true
+        type: String,
+        required: true
     },
-    orders:[{
-        cart_total: {type:Number},
+    customerInfo: {
+        firstName: { type: String },
+        lastName: { type: String },
+        email: { type: String }
+    },
+    orders: [{
+        cart_total: { type: Number },
         products: [{
-            id: {type:String},
-            name:{type:String},
-            image_url:{type:String},
-            price:{type:Number},
-            promotional_price:{type:Number},
-            description:{type:String},
-            quantity:{type:Number},
-            
+            id: { type: String },
+            name: { type: String },
+            image_url: { type: String },
+            price: { type: Number },
+            promotional_price: { type: Number },
+            description: { type: String },
+            quantity: { type: Number },
+
         }],
-        updatedBy:{
-            type:String,
-            default:""
+        updatedBy: {
+            type: String,
+            default: ""
         },
         isCancelled:
         {
-            type:Boolean,
-            default:false
+            type: Boolean,
+            default: false
         },
-        isPaid:{
-            type:Boolean,
-            default:false
+        isPaid: {
+            type: Boolean,
+            default: false
         },
-        isPickedUp:{
-            type:Boolean,
-            default:false
+        isPickedUp: {
+            type: Boolean,
+            default: false
         },
-        date:{ type:Date }
+        date: { type: Date }
     }]
 });
 

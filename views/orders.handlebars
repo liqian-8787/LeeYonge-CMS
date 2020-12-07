@@ -50,7 +50,6 @@
                 <p class="uid">uid: {{this.uid}}</p>
                 <ol>
                     {{#each this.orders}}
-
                     <li>
                         <div class="order-info">
                             <div>
@@ -77,7 +76,9 @@
                                 </div>
                             </form>
                         </div>
+                        <p>Order ID: {{this.id}}</p>
                         <p class="ordered-date">{{this.date}}</p>
+                        
                         {{#each this.products}}
                         <div class="orders-list">
                             <div class="product-img">
