@@ -6,15 +6,16 @@ const userModel = require("../model/user");
 const productsWithAWSUrl = require("../model/awsSyncProduct");
 const isAdminLogin = require("../middleware/authAdminUser");
 const { ConnectionStates } = require('mongoose');
+const { body } = require('express-validator');
 
 router.get("/", isAdminLogin, (req, res) => {
-    const userInfo = req.session.userInfo.name;   
+    const userInfo = req.session.userInfo.name;
     ordersModel.find().then(items => {
-        var getPreAssignedProducts = new Promise((resolve,reject)=>{
-            try{
-                if(items.length)
+        var getPreAssignedProducts = new Promise((resolve, reject) => {
+            try {
+                if (items.length)
                     items.forEach((item) => {
-                        item.orders.forEach((order,index,array) => {
+                        item.orders.forEach((order, index, array) => {
                             productsWithAWSUrl.allProductsWithPresignedUrl(order.products).then(
                                 (refinedProducts) => {
                                     const orderedProducts = refinedProducts.map(product => ({
@@ -26,21 +27,21 @@ router.get("/", isAdminLogin, (req, res) => {
                                         quantity: product.quantity
                                     }))
                                     order.products = orderedProducts;
-                                    if(index === array.length - 1) resolve(items);
+                                    if (index === array.length - 1) resolve(items);
                                 }
                             )
                         })
                     })
                 else
                     resolve(items)
-            }catch(ex){
+            } catch (ex) {
                 reject(ex);
-            }            
+            }
         })
-        getPreAssignedProducts.then((items)=>{              
+        getPreAssignedProducts.then((items) => {
             const queryParam = req.query.order_filter ? req.query.order_filter : "all";
             var categoryFilter = "all";
-            const newItems =items.length? items.map(item => ({
+            const newItems = items.length ? items.map(item => ({
                 ...item._doc, orders: item.orders.filter(order => {
                     if (queryParam.toLocaleLowerCase() === 'ispaid') {
                         categoryFilter = "isPaid";
@@ -50,7 +51,7 @@ router.get("/", isAdminLogin, (req, res) => {
                         categoryFilter = "ispickedup";
                         return order.isPickedUp;
                     }
-    
+
                     else if (queryParam.toLocaleLowerCase() === "iscancelled") {
                         categoryFilter = "isCancelled";
                         return order.isCancelled;
@@ -60,19 +61,30 @@ router.get("/", isAdminLogin, (req, res) => {
                         return order;
                     }
                 })
-            })).filter(item => item.orders.length > 0):items;
+            })).filter(item => item.orders.length > 0) : items;
+            const bodyParam = req.query.search_name_email?req.query.search_name_email:'';
+            var serachedItems = newItems.length?newItems.filter(item=>{
+                                
+                        if (item.customerInfo.firstName.indexOf(bodyParam.toLocaleLowerCase()) !== -1 || item.customerInfo.lastName.indexOf(bodyParam.toLocaleLowerCase()) !== -1
+                            || item.customerInfo.email.indexOf(bodyParam.toLocaleLowerCase()) !== -1) {
+                        return item
+                        }     
+                        else{
+                            return null
+                        }
+            }):newItems;
            
             res.render("orders", {
                 title: "Orders",
                 headingInfo: "Orders",
                 categoryFilter: categoryFilter,
-                filteredOrders: newItems,
+                filteredOrders: serachedItems,
                 user: userInfo,
             })
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err)
         })
-      
+
     })
 })
 

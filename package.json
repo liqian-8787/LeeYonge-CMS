@@ -23,11 +23,15 @@
     "express-session": "^1.17.0",
     "express-validator": "^6.4.0",
     "fixed-width-string": "^1.1.0",
+    "handlebars-helpers": "^0.10.0",
+    "handlebars.moment": "^1.0.4",
     "jquery": "^3.5.1",
+    "jquery-autocomplete": "^1.2.8",
     "lodash": "^4.17.20",
     "mongoose": "^5.9.7"
   },
   "devDependencies": {
-    "handlebars": "^4.7.6"
+    "handlebars": "^4.7.6",
+    "handlebars-helper-moment": "^0.2.0"
   }
 }

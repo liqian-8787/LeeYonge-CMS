@@ -6,13 +6,13 @@
             val.setAttribute('checked', 'checked');
             for (var i = 1; i < inputNodes.length - 1; ++i) {
                 inputNodes[i].disabled = true;
-                 inputNodes[i].checked = false;
+                inputNodes[i].checked = false;
             }
         }
         else {
-             val.removeAttribute('checked', 'checked');
+            val.removeAttribute('checked', 'checked');
             for (var i = 1; i < inputNodes.length - 1; ++i) {
-               
+
                 inputNodes[i].disabled = false;
             }
         }
@@ -25,29 +25,40 @@
     <h2>Customer orders</h2>
     <div class="orders-wrapper">
         <div>
-            <form method="GET" action="/orders" class="search-orders">
-                <label>Search By</label>
-                <select name="order_filter">
+            <div class="search-group">
+                <form method="GET" action="/orders" class="search-orders">
+                    <div class="search-filters">
+                        <label>Filter: </label>
+                        <select name="order_filter">
 
-                    <option value="All" {{#if_equals_ignorecase categoryFilter "All"}}selected{{/if_equals_ignorecase}}>
-                        All</option>
-                    <option value="isPaid"
-                        {{#if_equals_ignorecase categoryFilter "isPaid"}}selected{{/if_equals_ignorecase}}>Paid</option>
-                    <option value="isPickedup"
-                        {{#if_equals_ignorecase categoryFilter "isPickedup"}}selected{{/if_equals_ignorecase}}>Picked up
-                    </option>
-                    <option value="isCancelled"
-                        {{#if_equals_ignorecase categoryFilter "isCancelled"}}selected{{/if_equals_ignorecase}}>
-                        Cancelled</option>
+                            <option value="All"
+                                {{#if_equals_ignorecase categoryFilter "All"}}selected{{/if_equals_ignorecase}}>
+                                All</option>
+                            <option value="isPaid"
+                                {{#if_equals_ignorecase categoryFilter "isPaid"}}selected{{/if_equals_ignorecase}}>Paid
+                            </option>
+                            <option value="isPickedup"
+                                {{#if_equals_ignorecase categoryFilter "isPickedup"}}selected{{/if_equals_ignorecase}}>
+                                Picked up
+                            </option>
+                            <option value="isCancelled"
+                                {{#if_equals_ignorecase categoryFilter "isCancelled"}}selected{{/if_equals_ignorecase}}>
+                                Cancelled</option>
 
-                </select>
-                <input type="submit" value="Search" />
-            </form>
+                        </select>
+                        <input type="text" class="search-name-email" name="search_name_email"
+                            placeholder="search by name or email" />
+                    </div>
+                    <div class="search-button" align="right" ><input type="submit" value="Search" /> </div>
+
+            </div>
             {{#if filteredOrders}}
 
             {{#each filteredOrders }}
             <div class="order-wrap">
                 <p class="uid">uid: {{this.uid}}</p>
+                <p>Customer Name: {{this.customerInfo.firstName}} {{this.customerInfo.lastName}}</p>
+                <p>Customer Email: {{this.customerInfo.email}}</p>
                 <ol>
                     {{#each this.orders}}
                     <li>
@@ -64,12 +75,14 @@
                                         onchange="disable(isCancelled)" />
 
                                     <label for="isPaid">paid</label>
-                                    <input type="checkbox" id="isPaid" name="isPaid" {{#if this.isCancelled}}disabled{{/if}} {{#if this.isPaid}}checked{{/if}}
+                                    <input type="checkbox" id="isPaid" name="isPaid"
+                                        {{#if this.isCancelled}}disabled{{/if}} {{#if this.isPaid}}checked{{/if}}
                                         value="true" />
 
                                     <label for="isPickedUp">picked up</label>
                                     <input type="checkbox" id="isPickedUp" name="isPickedUp"
-                                        {{#if this.isCancelled}}disabled{{/if}}  {{#if this.isPickedUp}}checked{{/if}} value="true" />
+                                        {{#if this.isCancelled}}disabled{{/if}} {{#if this.isPickedUp}}checked{{/if}}
+                                        value="true" />
 
                                     <input class="order-update" type="submit" value="Update"
                                         formaction="/orders/update/{{this.id}}?method=PUT" />
@@ -77,8 +90,9 @@
                             </form>
                         </div>
                         <p>Order ID: {{this.id}}</p>
-                        <p class="ordered-date">{{this.date}}</p>
-                        
+
+                        <p class="ordered-date">Order Date: {{this.date}} </p>
+
                         {{#each this.products}}
                         <div class="orders-list">
                             <div class="product-img">
@@ -107,7 +121,9 @@
             </div>
             {{/each}}
             {{else}}
-            <div><p>The order list is empty !</p></div>
+            <div>
+                <p>The order list is empty !</p>
+            </div>
             {{/if}}
         </div>
     </div>

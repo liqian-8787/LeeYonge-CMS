@@ -1,3 +1,5 @@
+
+
 var register = function (Handlebars) {
     var helpers = {
         if_equals: function (string1, string2, options) {
@@ -23,8 +25,9 @@ var register = function (Handlebars) {
     } else {
         return helpers;
     }
-
+  
 };
+
 
 module.exports.register = register;
 module.exports.helpers = register(null); 
