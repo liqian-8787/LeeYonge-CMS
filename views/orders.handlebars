@@ -12,26 +12,31 @@
         else {
             val.removeAttribute('checked', 'checked');
             for (var i = 1; i < inputNodes.length - 1; ++i) {
-
                 inputNodes[i].disabled = false;
             }
         }
     }
-    function autoChecked(val){
-         var parent = val.parentElement;
-         var isPaid=parent.querySelector('#isPaid');
-         if(val.checked==true){
-             val.setAttribute('checked','checked');
-             if( isPaid.checked!==true){
-                isPaid.checked=true;
-             }            
-         }
-         else{
-             val.removeAttribute('checked', 'checked');
-         }
-       
-    }
+    const map = new Map();
+    function autoChecked(id, val) {
+        var parent = val.parentElement;      
+        var isPaid = parent.querySelector('#isPaid');
+        if (!map.has(id)) {
+           map.set(id, isPaid.checked);
+        }
+        if (val.checked) {
+            val.setAttribute('checked', 'checked');
+            if (!isPaid.checked) {
+                isPaid.checked = true;
+            }
+        }
 
+        else {
+            const state = map.get(id);
+            val.removeAttribute('checked', 'checked');
+            isPaid.checked = state
+        }
+
+    }
 </script>
 
 <div class="container orders">
@@ -63,21 +68,20 @@
                         <input type="text" class="search-name-email" name="search_name_email"
                             placeholder="search by name or email" />
                     </div>
-                    <div class="search-button" align="right" ><input type="submit" value="Search" /> </div>
-
+                    <div class="search-button" align="right"><input type="submit" value="Search" /> </div>
             </div>
             {{#if filteredOrders}}
             <script>
-                var allOrders = {{{toJson filteredOrders}}}
-                var allEmails = allOrders.map((order)=>order.customerInfo.email);
-                var allNames = allOrders.map((order)=>order.customerInfo.firstName + " " +order.customerInfo.lastName);
+                var allOrders = {{{ toJson filteredOrders }}}
+                var allEmails = allOrders.map((order) => order.customerInfo.email);
+                var allNames = allOrders.map((order) => order.customerInfo.firstName + " " + order.customerInfo.lastName);
                 var autocompleteSource = allNames.concat(allEmails);
-                 $( "input[name='search_name_email']" ).autocomplete({
+                $("input[name='search_name_email']").autocomplete({
                     source: autocompleteSource
                 });
             </script>
             {{#each filteredOrders }}
-           
+
             <div class="order-wrap">
                 <p class="uid">uid: {{this.uid}}</p>
                 <p>Customer Name: {{this.customerInfo.firstName}} {{this.customerInfo.lastName}}</p>
@@ -99,15 +103,15 @@
 
                                     <label for="isPaid">paid</label>
                                     <input type="checkbox" id="isPaid" name="isPaid"
-                                        {{#if this.isCancelled}}disabled{{/if}} {{#if this.isPaid}}checked{{/if}}
-                                        value="true" />
+                                        {{#if this.isCancelled}}disabled{{/if}} {{#if this.isPickedUp}}checked{{/if}}
+                                        {{#if this.isPaid}}checked{{/if}} value="true" />
 
                                     <label for="isPickedUp">picked up</label>
                                     <input type="checkbox" id="isPickedUp" name="isPickedUp"
                                         {{#if this.isCancelled}}disabled{{/if}} {{#if this.isPickedUp}}checked{{/if}}
-                                        value="true" onchange="autoChecked(isPickedUp)" />
+                                        value="true" onchange="autoChecked(`{{this.id}}`,isPickedUp)" />
 
-                                    <input class="order-update" type="submit" value="Update"
+                                    <input class="order-update" type="submit" value="Update"                                       
                                         formaction="/orders/update/{{this.id}}?method=PUT" />
                                 </div>
                             </form>
