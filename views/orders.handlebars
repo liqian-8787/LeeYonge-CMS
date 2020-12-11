@@ -17,6 +17,20 @@
             }
         }
     }
+    function autoChecked(val){
+         var parent = val.parentElement;
+         var isPaid=parent.querySelector('#isPaid');
+         if(val.checked==true){
+             val.setAttribute('checked','checked');
+             if( isPaid.checked!==true){
+                isPaid.checked=true;
+             }            
+         }
+         else{
+             val.removeAttribute('checked', 'checked');
+         }
+       
+    }
 
 </script>
 
@@ -53,8 +67,17 @@
 
             </div>
             {{#if filteredOrders}}
-
+            <script>
+                var allOrders = {{{toJson filteredOrders}}}
+                var allEmails = allOrders.map((order)=>order.customerInfo.email);
+                var allNames = allOrders.map((order)=>order.customerInfo.firstName + " " +order.customerInfo.lastName);
+                var autocompleteSource = allNames.concat(allEmails);
+                 $( "input[name='search_name_email']" ).autocomplete({
+                    source: autocompleteSource
+                });
+            </script>
             {{#each filteredOrders }}
+           
             <div class="order-wrap">
                 <p class="uid">uid: {{this.uid}}</p>
                 <p>Customer Name: {{this.customerInfo.firstName}} {{this.customerInfo.lastName}}</p>
@@ -82,7 +105,7 @@
                                     <label for="isPickedUp">picked up</label>
                                     <input type="checkbox" id="isPickedUp" name="isPickedUp"
                                         {{#if this.isCancelled}}disabled{{/if}} {{#if this.isPickedUp}}checked{{/if}}
-                                        value="true" />
+                                        value="true" onchange="autoChecked(isPickedUp)" />
 
                                     <input class="order-update" type="submit" value="Update"
                                         formaction="/orders/update/{{this.id}}?method=PUT" />

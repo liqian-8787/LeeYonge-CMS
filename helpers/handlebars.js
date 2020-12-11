@@ -15,6 +15,9 @@ var register = function (Handlebars) {
             } else {
                 return options.inverse(this);
             }
+        },
+        toJson: function(context){
+            return JSON.stringify(context);
         }
     };
 

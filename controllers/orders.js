@@ -63,15 +63,15 @@ router.get("/", isAdminLogin, (req, res) => {
                 })
             })).filter(item => item.orders.length > 0) : items;
             const bodyParam = req.query.search_name_email?req.query.search_name_email:'';
-            var serachedItems = newItems.length?newItems.filter(item=>{
-                                
-                        if (item.customerInfo.firstName.indexOf(bodyParam.toLocaleLowerCase()) !== -1 || item.customerInfo.lastName.indexOf(bodyParam.toLocaleLowerCase()) !== -1
-                            || item.customerInfo.email.indexOf(bodyParam.toLocaleLowerCase()) !== -1) {
-                        return item
-                        }     
-                        else{
-                            return null
-                        }
+            
+            var serachedItems = newItems.length?newItems.filter(item=>{       
+                const name=item.customerInfo.firstName + ' ' +  item.customerInfo.lastName;                         
+                if (name.indexOf(bodyParam.toLocaleLowerCase()) !== -1 || item.customerInfo.email.indexOf(bodyParam.toLocaleLowerCase()) !== -1) {
+                return item
+                }     
+                else{
+                    return null
+                }
             }):newItems;
            
             res.render("orders", {
